@@ -1,0 +1,42 @@
+import React from 'react';
+import { TransactionsListProps } from '@/types/telegram'; // adjust the path accordingly
+
+const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => {
+  return (
+    <div className="max-w-4xl mx-auto rounded-lg p-6 bg-gradient-to-b from-gray-900/80 to-black/50">
+      <h2 className="text-2xl font-bold mb-6 text-center text-white">Your Purchases</h2>
+      {transactions.length === 0 ? (
+        <p className="text-gray-600 text-center text-white">You have not made any purchases yet.</p>
+      ) : (
+        transactions.map((tx, index) => (
+          <div
+            key={index}
+            className="shadow-md rounded-lg p-6 mb-4 border border-gray-200"
+          >
+            <h3 className="text-xl font-semibold mb-2">
+              Purchase #{index + 1}
+            </h3>
+            <p>
+              <span className="font-medium">Item:</span> {tx.item} Gh/s
+            </p>
+            <p>
+              <span className="font-medium">Amount:</span> {tx.amount} TON
+            </p>
+            <p>
+              <span className="font-medium">Date:</span>{" "}
+              {new Date(tx.date).toLocaleString()}
+            </p>
+            <p>
+              <span className="font-medium">Validity:</span> {tx.validity}
+            </p>
+            <p className="break-all">
+              <span className="font-medium">BlockChain Code:</span> {tx.boc}
+            </p>
+          </div>
+        ))
+      )}
+    </div>
+  );
+};
+
+export default TransactionsList;

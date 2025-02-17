@@ -1,101 +1,161 @@
-import Image from "next/image";
+// app/page.tsx
+'use client';
 
-export default function Home() {
+import { type FC, useEffect, useState } from 'react';
+import UpgradeButton from './components/UpgradeButton';
+import ClaimButton from './components/ClaimButton';
+import DHTBalanceCard from './components/DHTBalanceCard';
+import AnimatedCoins from './components/AnimatedCoins';
+import Tokenomics from './components/Tokenomics';
+import TokenDetails from './components/TokenDetails';
+import { useUser } from '@/context/UserContext'; // Adjust the import path
+import { getUserData } from '@/lib/users'; // Adjust the import path
+import { useMining } from '@/context/MiningContext';
+
+
+
+const HomePage = () => {
+  const { userData, isLoading } = useUser(); // Get user data from context
+  const [initialBalance, setInitialBalance] = useState<number>(); // Add state for initialBalance
+  const [initialHashRate, setInitialHashRate] = useState<number>(); // Add state for initialHashRate
+
+  // Fetch user data from Firestore when userData is available
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Get userId from UserContext
+        if (!userData?.id) {
+          console.error('User ID is missing');
+          return;
+        }
+
+        const userId = userData.id.toString(); // Ensure userId is a string
+        const userFirestoreData = await getUserData(userId);
+
+        if (userFirestoreData) {
+          setInitialBalance(userFirestoreData.balance);
+          setInitialHashRate(userFirestoreData.hashrate);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [userData]); // Add userData as a dependency
+
+  const {
+    balance,
+    isMining,
+    minedAmount,
+    toggleMining,
+    claimDHT,
+    formattedHashRate,
+    isClaimable,
+  } = useMining();
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Show loading state while fetching user data
+  }
+
+  if (!userData?.id) {
+    return <div>Error: User ID is missing. Please log in again.</div>; // Handle missing userId
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen p-2">
+      <div className="max-w-l mx-auto">
+        <div className="mb-4 flex flex-col gap-4 mt-2 border-2 border-gray-700 rounded-xl p-2 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
+          <DHTBalanceCard balance={balance} imageSrc="/coin.png" />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+        <div className="mt-4 mb-4 border-2 border-gray-700 rounded-xl py-6 px-4 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
+          <AnimatedCoins isMining={isMining} />
+
+          <div className="text-center mb-6">
+            <div className="bg-gradient-to-b from-gray-700 via-gray-800 to-gray-1000 rounded-lg p-4 backdrop-blur-md">
+              <p className="text-3xl font-bold bg-gradient-to-r from-blue-200 to-blue-600 shadow-lg bg-clip-text rounded-full text-transparent animate-gradient">
+                {minedAmount.toFixed(6)}{' '}
+                <span className="font-mono bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
+                  $DHT
+                </span>
+              </p>
+              <div className="flex items-center justify-center space-x-2 mt-2">
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    isMining ? 'bg-green-400 animate-pulse' : 'bg-gray-400'
+                  }`}
+                ></div>
+                <p className="text-sm text-gray-300">
+                  Hashrate: <span className="font-mono">{formattedHashRate}</span> ⚡️
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <button
+              onClick={toggleMining}
+              className={`w-full py-3 px-6 rounded-md font-semibold text-white transition-all transform hover:scale-105 ${
+                isMining
+                  ? 'bg-gradient-to-r from-amber-600 to-amber-800 animate-pulse shadow-lg shadow-green-500/50'
+                  : 'bg-gradient-to-r from-black/30 to-blue-600 shadow-lg shadow-blue-500/50 animate-pulse'
+              }`}
+            >
+              <div className="flex items-center justify-center space-x-2">
+                {isMining ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Mining in progress..</span>
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                    <span>Start Mining</span>
+                  </>
+                )}
+              </div>
+            </button>
+
+            <div className="grid grid-cols-2 gap-4">
+              <ClaimButton
+                onClick={claimDHT}
+                text="Claim Tokens"
+                disabled={!isClaimable}
+              />
+              <UpgradeButton
+                text={`Upgrade miner`}
+                href="/upgrade"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-4 mt-4 border-2 border-gray-700 rounded-xl p-6 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
+          <Tokenomics />
+          <TokenDetails
+            name="Diamond Heist"
+            symbol="$DHT"
+            totalSupply="500,000,000.00"
+            price="0.80"
+            softCap="5,000,000,000.00"
+            hardCap="20,000,000,000.00"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default HomePage;
