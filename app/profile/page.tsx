@@ -48,7 +48,7 @@ const ProfilePage = () => {
                 Ambassador 
               </h2>
               <p className="mt-2 text-amber-100/80 text-sm">
-                Congratulations! You've successfully referred 10+ and achieved Ambassador status.
+                Congratulations! You have successfully referred 10+ and achieved Ambassador status.
               </p>
             </div>
           </div>

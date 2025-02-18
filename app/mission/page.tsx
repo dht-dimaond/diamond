@@ -175,7 +175,7 @@ const MissionsPage = () => {
                 Ambassador Status Achieved!
               </h2>
               <p className="mt-2 text-amber-100/80">
-                Congratulations! You've successfully referred 10+ friends and claimed your 1000 DHT reward.
+                Congratulations! You have successfully referred 10+ friends and claimed your 1000 DHT reward.
               </p>
             </div>
           </div>
