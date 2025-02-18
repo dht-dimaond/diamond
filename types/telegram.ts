@@ -22,6 +22,10 @@ export interface TelegramUser {
     telegramComplete: boolean;
     telegramRewardClaimed: boolean;
     referralRewardClaimed: boolean;
+    referrals?: string[];
+    referrer?: string | null;
+    isAmbassador: boolean;
+    grandPrizeRewardClaimed: boolean;
   }
   
 

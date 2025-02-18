@@ -14,7 +14,7 @@ interface ProfileCardProps {
 const ProfileCard: React.FC<ProfileCardProps> = ({ userData }) => {
   return (
     <div className="min-h-screen p-2">
-      <div className="flex flex-col gap-4 p-4 rounded-2xl overflow-hidden shadow-2xl transform transition-all hover:scale-[1.01]">
+      <div className="flex flex-col gap-4 rounded-2xl overflow-hidden shadow-2xl transform transition-all hover:scale-[1.01]">
             {/* Profile Image / User Info / Premium? */}
             <div className=" w-full flex flex-row justify-start gap-2 backdrop-blur-sm bg-white/5 rounded-xl p-4 border border-white/10 mb-4">
               <div className="relative group">

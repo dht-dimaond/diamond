@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { useUser } from '@/context/UserContext';
-import { getReferrals } from '@/lib/referralService';
-import { getUserData, completeSocialMission, claimMissionReward } from '@/lib/users';
+import { getUserData, getUserReferrals, completeSocialMission, claimMissionReward } from '@/lib/users';
 import Link from 'next/link';
 
 const MissionsPage = () => {
   const { userData } = useUser();
   const [referralCount, setReferralCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [isAmbassador, setIsAmbassador] = useState(false);
+  const [grandPrizeRewardClaimed, setGrandPrizeRewardClaimed] = useState(false);
   const [missions, setMissions] = useState({
     twitter: { completed: false, claimed: false },
     telegram: { completed: false, claimed: false },
@@ -26,7 +27,8 @@ const MissionsPage = () => {
         
         if (!userDoc) return;
 
-        const referrals = await getReferrals(userData.id.toString());
+        // Get referrals using getUserReferrals
+        const referrals = await getUserReferrals(userData.id.toString());
         
         setMissions({
           twitter: {
@@ -43,6 +45,10 @@ const MissionsPage = () => {
         });
         
         setReferralCount(referrals.length);
+        
+        // Set ambassador status and grand prize claim status
+        setIsAmbassador(userDoc.isAmbassador || false);
+        setGrandPrizeRewardClaimed(userDoc.grandPrizeRewardClaimed || false);
       } catch (error) {
         console.error('Error loading mission data:', error);
       } finally {
@@ -94,6 +100,23 @@ const MissionsPage = () => {
     }
   };
 
+  const handleClaimGrandPrize = async () => {
+    if (!userData?.id || referralCount < 10 || grandPrizeRewardClaimed) return;
+    
+    try {
+      // Using existing claimMissionReward function with a special type
+      await claimMissionReward(userData.id.toString(), 'grandPrize', 1000, { isAmbassador: true });
+      
+      // Update local state
+      setIsAmbassador(true);
+      setGrandPrizeRewardClaimed(true);
+      
+      alert('Congratulations! You are now an Ambassador and have claimed 1000 DHT!');
+    } catch (error) {
+      console.error('Error claiming ambassador reward:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen p-4 flex items-center justify-center">
@@ -113,26 +136,56 @@ const MissionsPage = () => {
             <h2 className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
               Promo Prize: $1000 DHT
             </h2>
-            <p className="mt-2 text-amber-100/80">Invite 10 friends to unlock and get the ambasador badge.</p>
+            <p className="mt-2 text-amber-100/80">Invite 10 friends to unlock and get the ambassador badge.</p>
             <div className="mt-4 flex items-center justify-center gap-2">
               <div className="flex-1 h-2 bg-gray-800 rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-amber-500 transition-all duration-500 " 
-                  style={{ width: `${(referralCount/10)*100}%` }}
+                  style={{ width: `${Math.min((referralCount/10)*100, 100)}%` }}
+
                 />
               </div>
               <span className="text-sm font-mono text-amber-200">
                 {referralCount}/10
               </span>
             </div>
+            
+            {referralCount >= 10 && !grandPrizeRewardClaimed && (
+              <button
+                onClick={handleClaimGrandPrize}
+                className="mt-4 px-6 py-2 overflow-hidden font-semibold text-white text-sm transition-all duration-300 rounded-lg cursor-pointer bg-gradient-to-r from-amber-400 to-amber-600 shadow-lg shadow-amber-500/50 animate-pulse"
+              >
+                Claim Ambassador Status & 1000 DHT
+              </button>
+            )}
           </div>
         </div>
+        
+        {/* Ambassador Badge - only shown when isAmbassador is true */}
+        {isAmbassador && (
+          <div className="relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-amber-700/30 to-amber-600/10 border border-amber-600/50">
+            <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10" />
+            <div className="relative z-10 text-center">
+              <div className="flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-bold bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+                Ambassador Status Achieved!
+              </h2>
+              <p className="mt-2 text-amber-100/80">
+                Congratulations! You've successfully referred 10+ friends and claimed your 1000 DHT reward.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Missions Grid */}
-        <div className="grid gap-6 md:grid-cols-2 border-2 border-gray-700 rounded-xl p-6 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
+        <div className="gap-6 flex flex-col border-2 border-gray-700 rounded-xl p-6 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
           {/* Referral Mission Card */}
-          <div className="col-span-full rounded-xl p-6 border border-gray-700/50 bg-gradient-to-b from-gray-800 via-gray-800 to-gray-1000 rounded-lg backdrop-blur-md shadow-md w-full max-w-md">
-            <div className="flex flex-col gap-4">
+          <div className=" rounded-xl p-6 border border-gray-700/50 bg-gradient-to-b from-gray-800 via-gray-800 to-gray-1000 rounded-lg backdrop-blur-md shadow-md w-full max-w-full">
+            <div className="flex flex-col w-full max-w-full gap-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-amber-400">Invite Friends</h3>
                 <span className="px-3 py-1 text-sm rounded-full bg-amber-900/30 text-amber-400">
@@ -147,7 +200,8 @@ const MissionsPage = () => {
                   <div className="h-1 bg-gray-800 rounded-full">
                     <div 
                       className="h-full bg-amber-500 transition-all duration-500 rounded-full" 
-                      style={{ width: `${(referralCount/5)*100}%` }}
+                      style={{ width: `${Math.min((referralCount/5)*100, 100)}%` }}
+
                     />
                   </div>
                 </div>
@@ -175,11 +229,11 @@ const MissionsPage = () => {
             { type: 'telegram' as const, url: 'https://t.me/+PMWu-iBnsGg2NDM0', label: 'Join Our Telegram Channel' },
             { type: 'twitter' as const, url: 'https://x.com/diamondhiest?s=11', label: 'Follow us on(X) Twitter' }
           ].map(({ type, url, label }) => (
-            <div key={type} className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg p-6 backdrop-blur-md shadow-md w-full max-w-md">
+            <div key={type} className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg p-6 backdrop-blur-md shadow-md w-full max-w-full">
               <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-white">{label}</h3>
-                  <span className="px-3 py-1 text-sm rounded-full bg-amber-900/30 text-white">
+                  <span className="px-3 py-1 text-xs rounded-full bg-amber-900/30 text-white">
                     100 $DHT
                   </span>
                 </div>

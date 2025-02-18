@@ -28,7 +28,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </div>
 
         {/* Main Content */}
-        <TonConnectUIProvider manifestUrl="https://moccasin-implicit-eel-888.mypinata.cloud/ipfs/bafkreiay7dqpdv7ca4ss5lhwtixa7rhl4kji74aqyr3y6kfwrpikd63bva">
+        <TonConnectUIProvider manifestUrl="https://moccasin-implicit-eel-888.mypinata.cloud/ipfs/bafkreifrznbmai6mnl3lse3lw5evmcll6ekh2vyjpfozewuxbj2f677mva">
           <UserProvider>
             <div className="flex flex-col min-h-screen">
               {/* Ticker */}

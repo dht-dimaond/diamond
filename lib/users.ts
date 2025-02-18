@@ -1,4 +1,4 @@
-import { doc, setDoc, getDoc, updateDoc,collection, addDoc, getDocs  } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc,collection, addDoc, getDocs, arrayUnion  } from 'firebase/firestore';
 import { db } from './firebase';
 import { TelegramUser, UserData } from '@/types/telegram';
 import { MiningTransaction } from '@/types/telegram';
@@ -23,7 +23,12 @@ export const saveUserData = async (telegramData: TelegramUser): Promise<void> =>
         twitterRewardClaimed: false,
         telegramComplete: false,
         telegramRewardClaimed: false,
-        referralRewardClaimed: false
+        referralRewardClaimed: false,
+         // New fields for referral system
+        referrals: [],      // Array to store referred users
+        referrer: null ,     // To store the ID of user who referred them
+        isAmbassador: false,
+        grandPrizeRewardClaimed: false
       };
 
       await setDoc(userRef, userData);
@@ -87,8 +92,9 @@ export const completeSocialMission = async (
 // New function to claim mission reward
 export const claimMissionReward = async (
   userId: string,
-  missionType: 'twitter' | 'telegram' | 'referral',
-  rewardAmount: number
+  missionType: 'twitter' | 'telegram' | 'referral' | 'grandPrize',
+  rewardAmount: number,
+  additionalUpdates?: object
 ): Promise<void> => {
   try {
     const userRef = doc(db, 'users', userId);
@@ -105,6 +111,11 @@ export const claimMissionReward = async (
       balance: userData.balance + rewardAmount,
       [`${missionType}RewardClaimed`]: true
     };
+
+     // Merge in any additional updates if provided
+     if (additionalUpdates) {
+      Object.assign(updateData, additionalUpdates);
+    }
 
     await updateDoc(userRef, updateData);
   } catch (error) {
@@ -139,6 +150,51 @@ export const fetchUserTransactions = async (userId: string): Promise<MiningTrans
     return transactions;
   } catch (error) {
     console.error("Error fetching transactions:", error);
+    throw error;
+  }
+};
+
+
+// Add these functions to your Firebase lib file
+export const handleReferral = async (userId: string, referrerId: string): Promise<void> => {
+  try {
+    const userRef = doc(db, 'users', userId);
+    const referrerRef = doc(db, 'users', referrerId);
+    
+    // Check if user exists and hasn't been referred yet
+    const userDoc = await getDoc(userRef);
+    if (!userDoc.exists() || userDoc.data().referrer) {
+      return;
+    }
+
+    // Check if referrer exists
+    const referrerDoc = await getDoc(referrerRef);
+    if (!referrerDoc.exists()) {
+      return;
+    }
+
+    // Update user with referrer
+    await updateDoc(userRef, {
+      referrer: referrerId
+    });
+
+    // Update referrer's referrals array
+    await updateDoc(referrerRef, {
+      referrals: arrayUnion(userId)
+    });
+  } catch (error) {
+    console.error('Error handling referral:', error);
+    throw error;
+  }
+};
+
+// Get user's referrals
+export const getUserReferrals = async (userId: string): Promise<string[]> => {
+  try {
+    const userData = await getUserData(userId);
+    return userData?.referrals || [];
+  } catch (error) {
+    console.error('Error getting referrals:', error);
     throw error;
   }
 };
