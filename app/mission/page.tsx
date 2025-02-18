@@ -134,9 +134,9 @@ const MissionsPage = () => {
           <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10" />
           <div className="relative z-10 text-center">
             <h2 className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
-              Promo Prize: $1000 DHT
+              GRAND PRICE: $1000 DHT
             </h2>
-            <p className="mt-2 text-amber-100/80">Invite 10 friends to unlock and get the ambassador badge.</p>
+            <p className="mt-2 text-amber-100/80">Invite 10 friends to claim prize and unlock the ambassador badge.</p>
             <div className="mt-4 flex items-center justify-center gap-2">
               <div className="flex-1 h-2 bg-gray-800 rounded-full overflow-hidden">
                 <div 
@@ -189,7 +189,7 @@ const MissionsPage = () => {
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-amber-400">Invite Friends</h3>
                 <span className="px-3 py-1 text-sm rounded-full bg-amber-900/30 text-amber-400">
-                  100 DHT
+                  +100 DHT
                 </span>
               </div>
               <div className="space-y-4">
@@ -208,7 +208,7 @@ const MissionsPage = () => {
                 <div className="flex gap-3 flex-wrap">
                   <Link
                     href="/invite"
-                    className="flex-1 px-4 py-2 text-center rounded-lg bg-gradient-to-r from-amber-400 to-amber-600 animate-pulse shadow-lg shadow-green-500/50 animate-pulse"
+                    className="flex-1 px-4 py-2 text-center rounded-lg bg-gradient-to-r from-blue-400 to-amber-600 animate-pulse shadow-lg shadow-blue-500/50 animate-pulse"
                   >
                     Invite
                   </Link>
@@ -226,16 +226,19 @@ const MissionsPage = () => {
 
           {/* Social Mission Cards */}
           {[
-            { type: 'telegram' as const, url: 'https://t.me/+PMWu-iBnsGg2NDM0', label: 'Join Our Telegram Channel' },
+            { type: 'telegram' as const, url: 'https://t.me/+PMWu-iBnsGg2NDM0', label: 'Join Telegram Channel' },
             { type: 'twitter' as const, url: 'https://x.com/diamondhiest?s=11', label: 'Follow us on(X) Twitter' }
           ].map(({ type, url, label }) => (
-            <div key={type} className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg p-6 backdrop-blur-md shadow-md w-full max-w-full">
+            <div key={type} className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg py-6 px-4 backdrop-blur-md shadow-md w-full max-w-full">
               <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-white">{label}</h3>
-                  <span className="px-3 py-1 text-xs rounded-full bg-amber-900/30 text-white">
-                    100 $DHT
-                  </span>
+                  <h3 className="text-lg space-x-2 font-semibold text-white">
+                    {label}  
+                    <span className="px-3 py-1 text-xs rounded-full bg-amber-800/30 text-amber-400">
+                      +100 DHT
+                    </span>
+                  </h3>
+                 
                 </div>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between text-sm">
@@ -256,7 +259,7 @@ const MissionsPage = () => {
                       className={`flex-1 px-4 py-2 overflow-hidden font-semibold text-white text-sm transition-all duration-300 rounded-lg cursor-pointer ${
                         (missions[type].completed)
                           ? 'bg-gray-800 text-gray-500 ring-offset-gray-200 cursor-not-allowed'
-                          : 'bg-gradient-to-r from-blue-400 to-blue-800 animate-pulse shadow-lg shadow-blue-500/50 animate-pulse'
+                          : 'bg-gradient-to-r from-blue-400 to-amber-800 animate-pulse shadow-lg shadow-blue-500/50 animate-pulse'
                       } ease focus:outline-none`}
                     >
                       {missions[type].completed ? 'Completed' : 'Join Now'}

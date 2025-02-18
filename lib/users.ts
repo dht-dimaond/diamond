@@ -1,4 +1,4 @@
-import { doc, setDoc, getDoc, updateDoc,collection, addDoc, getDocs, arrayUnion  } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc,collection, addDoc, getDocs, arrayUnion, where, query  } from 'firebase/firestore';
 import { db } from './firebase';
 import { TelegramUser, UserData } from '@/types/telegram';
 import { MiningTransaction } from '@/types/telegram';
@@ -196,5 +196,32 @@ export const getUserReferrals = async (userId: string): Promise<string[]> => {
   } catch (error) {
     console.error('Error getting referrals:', error);
     throw error;
+  }
+};
+
+// Add to your existing users file
+export const getReferrerData = async (userId: string): Promise<UserData | null> => {
+  try {
+    const userData = await getUserData(userId);
+    return userData?.referrer ? await getUserData(userData.referrer) : null;
+  } catch (error) {
+    console.error('Error getting referrer data:', error);
+    return null;
+  }
+};
+
+export const getReferralsWithDetails = async (userId: string): Promise<UserData[]> => {
+  try {
+    const userData = await getUserData(userId);
+    if (!userData?.referrals?.length) return [];
+    
+    const referralsSnapshot = await getDocs(
+      query(collection(db, 'users'), where('__name__', 'in', userData.referrals))
+    );
+    
+    return referralsSnapshot.docs.map(doc => doc.data() as UserData);
+  } catch (error) {
+    console.error('Error getting referrals with details:', error);
+    return [];
   }
 };

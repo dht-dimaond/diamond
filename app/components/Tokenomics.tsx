@@ -8,7 +8,7 @@ interface TokenDistribution {
 
 const Tokenomics: React.FC = () => {
   const distributions: TokenDistribution[] = [
-    { name: "Public Sale", percentage: 40, color: "bg-blue-500" },
+    { name: "Community", percentage: 40, color: "bg-blue-500" },
     { name: "Development", percentage: 25, color: "bg-blue-700" },
     { name: "Team & Advisors", percentage: 15, color: "bg-purple-500" },
     { name: "Marketing", percentage: 10, color: "bg-pink-500" },

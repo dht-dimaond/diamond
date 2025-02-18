@@ -1,12 +1,11 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { HomeIcon, UserGroupIcon, BriefcaseIcon, WalletIcon, UserIcon } from '@heroicons/react/24/outline';
 
 export default function ClientNav() {
   const pathname = usePathname();
-  const router = useRouter();
 
   return (
     <div className="fixed bottom-0 w-full z-50">
@@ -19,7 +18,7 @@ export default function ClientNav() {
              }} 
         />
         <div 
-          className="relative z-20 border border-gray-400 rounded-full p-3 bg-white/5 backdrop-blur-sm cursor-pointer"
+          className="relative z-20 border border-gray-400 text-white rounded-full p-3 bg-white/5 backdrop-blur-sm cursor-pointer"
         >
           <Link
             href="/profile"

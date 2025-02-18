@@ -21,7 +21,8 @@ interface MiningPackage {
   hashRate: number;
   timeToMine: string;
   priceTON: number;
-  bonusPercentage: number;
+  bonusPercentage: string;
+  bonusReturn:string;
   Validity: string;
 }
 
@@ -30,24 +31,27 @@ const MINING_PACKAGES: MiningPackage[] = [
     id: 1,
     hashRate: 33.33,
     timeToMine: "3 hours",
-    priceTON: 0.02,
-    bonusPercentage: 5,
+    priceTON: 1.3,
+    bonusPercentage: "80% of purchase price earned at the end of validity",
+    bonusReturn:"1.03 TON",
     Validity: "30 days",
   },
   {
     id: 2,
     hashRate: 50,
     timeToMine: "2 hours",
-    priceTON: 2,
-    bonusPercentage: 7,
+    priceTON: 2.5,
+    bonusPercentage: "100% of purchase price earned at the end of validity",
+    bonusReturn:"2.5 TON",
     Validity: "30 days",
   },
   {
     id: 3,
     hashRate: 100,
     timeToMine: "1 hour",
-    priceTON: 4,
-    bonusPercentage: 10,
+    priceTON: 4.2,
+    bonusPercentage: "150% of purchase price earned at the end of validity",
+    bonusReturn:"6.3 TON",
     Validity: "30 days",
   },
 ];
@@ -155,7 +159,7 @@ export default function UpgradePage () {
         }
       } catch (err: any) {
         console.error('Transaction failed:', err);
-        setError('Purchase failed. Make sure you have sufficient balance or connect a different wallet.');
+        setError('Purchase failed. Make sure you have sufficient balance or connect with a different TON wallet.');
       } finally {
         setIsLoading(false);
       }
@@ -196,7 +200,7 @@ export default function UpgradePage () {
         
         {success && (
           <div className="bg-green-50 p-4 rounded-md">
-            <p className="text-green-700">Purchase successful, Your hashrate has been increased!.</p>
+            <p className="text-green-700">Purchase successful, Your hashrate has been increased. Restart the app or refresh your server.</p>
           </div>
         )}
 
@@ -209,9 +213,10 @@ export default function UpgradePage () {
                   {pkg.hashRate} H/s
                 </h3>
                 <div className="text-gray-100">
-                  <p>Mining Time: {pkg.timeToMine}</p>
+                  <p>Mining Time: {pkg.timeToMine} <span className="text-white/50 text-xs">(to mine $1000DHT)</span></p>
                   <p>Price: {pkg.priceTON} TON</p>
-                  <p className="text-green-400">Bonus: {pkg.bonusPercentage}%</p>
+                  <p>Validity: {pkg.Validity}</p>
+                  <p className="text-white">Bonus: <span className="text-sm text-green-400">{pkg.bonusPercentage} <span className='text-white/50 text-xs'>({pkg.bonusReturn})</span></span></p>
                 </div>
                 <button
                   onClick={() => handlePurchase(pkg)}

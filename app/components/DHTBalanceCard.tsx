@@ -10,7 +10,7 @@ interface BalanceCardProps {
 
 export default function DHTBalanceCard({ balance, imageSrc }: BalanceCardProps) {
   return (
-    <div className="w-full mb-16 flex items-center justify-between rounded-xl p-2 border-2 border-b-gray-700 border-t-0 border-r-0 border-l-0 bg-gradient-to-b from-gray-700 to-gray-900 rounded-lg">
+    <div className="w-full flex items-center justify-between rounded-xl p-2 border-2 border-b-gray-700 border-t-0 border-r-0 border-l-0 bg-gradient-to-b from-gray-700 to-gray-900 rounded-lg">
       {/* Center: DHT Balance */}
       <div className="flex flex-row items-center">
         {/* Image with required width and height */}

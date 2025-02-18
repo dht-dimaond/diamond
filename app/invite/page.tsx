@@ -14,8 +14,8 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center mt-16">
-      <h1 className="text-4xl font-bold mb-8">Refer A Friend</h1>
+    <main className="flex min-h-screen flex-col items-center mt-8">
+      <h1 className="text-4xl text-white font-bold mb-6">Refer A Friend</h1>
       <ReferralSystem initData={initData} userId={userData?.id.toString() || ''} startParam={start_param || ''} />
     </main>
   )

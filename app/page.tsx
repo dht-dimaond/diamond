@@ -65,9 +65,22 @@ const HomePage = () => {
   return (
     <div className="min-h-screen p-2">
       <div className="max-w-l mx-auto">
-        <div className="mb-4 flex flex-col gap-4 mt-2 border-2 border-gray-700 rounded-xl p-2 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
-          <DHTBalanceCard balance={balance} imageSrc="/coin.png" />
+      <div className="flex flex-col gap-4 mt-2 border-2 border-gray-700 rounded-xl p-4 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
+        <DHTBalanceCard balance={balance} imageSrc="/coin.png" />
+        <div className="flex items-center justify-between border-t border-gray-700/50 pt-2">
+          <div className="flex items-center space-x-2">
+            <img src="/coin.png" alt="DHT" className="w-6 h-6" />
+            <span className="text-gray-300">DHT </span>
+          </div>
+          <div className="flex items-center">
+            <span className="text-xl font-semibold text-white">$0.80</span>
+            <span className="ml-2 px-2 py-1 text-sm bg-green-500/20 text-green-400 rounded-lg flex items-center">
+              <span className="mr-1">+</span>2.47%
+            </span>
+          </div>
         </div>
+      </div>
+        
         <div className="mt-4 mb-4 border-2 border-gray-700 rounded-xl py-6 px-4 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
           <AnimatedCoins isMining={isMining} />
 
@@ -147,7 +160,7 @@ const HomePage = () => {
           <TokenDetails
             name="Diamond Heist"
             symbol="$DHT"
-            totalSupply="500,000,000.00"
+            totalSupply="1000,000,000.00"
             price="0.80"
             softCap="5,000,000,000.00"
             hardCap="20,000,000,000.00"

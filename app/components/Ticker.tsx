@@ -4,9 +4,9 @@ import React from "react";
 
 const Ticker = () => {
   const newsItems = [
-    "Breaking: Refer now to Earn the Ambassador Badge!!! 🕓",
-    "Stay tuned for updates and announcements coming soon.🚀",
-    "💲DHT 5,000,000 for our first 10,000 users 💥",
+    "LIMITED OFFER : Refer 10 Users now to Earn the Ambassador Badge and $1000DHT GRAND PRICE !!! 🕓",
+    "Join Our Telegram Commmunity for News and Updates",
+    "Follow us On X(Twitter) to be part of our ever-expanding community."
   ];
 
   return (

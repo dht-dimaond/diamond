@@ -11,26 +11,26 @@ const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => 
         transactions.map((tx, index) => (
           <div
             key={index}
-            className="shadow-md rounded-lg p-6 mb-4 border border-gray-200"
+            className="shadow-md rounded-lg p-6 text-white mb-4 border border-gray-200"
           >
-            <h3 className="text-xl font-semibold mb-2">
+            <h3 className="text-xl text-white font-semibold mb-2">
               Purchase #{index + 1}
             </h3>
             <p>
-              <span className="font-medium">Item:</span> {tx.item} Gh/s
+              <span className="font-medium text-white">Item:</span> {tx.item} Gh/s
             </p>
             <p>
-              <span className="font-medium">Amount:</span> {tx.amount} TON
+              <span className="font-medium text-white">Amount:</span> {tx.amount} TON
             </p>
             <p>
-              <span className="font-medium">Date:</span>{" "}
+              <span className="font-medium text-white">Date:</span>{" "}
               {new Date(tx.date).toLocaleString()}
             </p>
             <p>
-              <span className="font-medium">Validity:</span> {tx.validity}
+              <span className="font-medium text-white">Validity:</span> {tx.validity}
             </p>
             <p className="break-all">
-              <span className="font-medium">BlockChain Code:</span> {tx.boc}
+              <span className="font-medium text-white">BlockChain Code:</span> {tx.boc}
             </p>
           </div>
         ))

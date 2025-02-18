@@ -1,57 +1,104 @@
-// pages/about.jsx
+import React from 'react';
+import { Gem, Users, Cpu, CheckSquare, Rocket, Award, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+
+
+
+interface FeatureCardProps {
+  icon: React.ComponentType<any>;
+  title: string;
+  children: React.ReactNode;
+}
+
+
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon: Icon, title, children }) => (
+  <div className="p-4 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300">
+    <div className="flex items-start space-x-3">
+      <Icon className="w-6 h-6 text-indigo-400 mt-1 flex-shrink-0" />
+      <div>
+        <h3 className="font-semibold text-indigo-300 mb-2">{title}</h3>
+        {children}
+      </div>
+    </div>
+  </div>
+);
+
 const About = () => {
   return (
-    <div className="p-2">
-     <div className="mt-2 text-sm leading-7 text-white-200 backdrop-blur-xl p-2 ">
-        <h1 className="font-bold text-2xl text-blue-600">▎Welcome to Diamond Heist:</h1>
-        <span className="font-semibold block text-l text-indigo-700 mt-2">
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
+      {/* Hero Section */}
+      <div className="text-center space-y-4">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+          Welcome to Diamond Heist
+        </h1>
+        <p className="text-xl text-indigo-300">
           Your Ultimate Crypto Mining Adventure!
-        </span>
-        <div className="block mt-2 text-gray-300">
-          <strong className="text-indigo-600">Project Overview: </strong>
+        </p>
+      </div>
+
+      {/* Project Overview */}
+      <div className="rounded-xl bg-gradient-to-r from-blue-500/10 to-indigo-500/10 p-6 backdrop-blur-xl border border-white/10">
+        <div className="flex items-center space-x-3 mb-4">
+          <Gem className="w-6 h-6 text-blue-400" />
+          <h2 className="text-xl font-bold text-blue-400">Project Overview</h2>
+        </div>
+        <p className="text-gray-300 leading-relaxed">
           Prepare for the thrill of a lifetime with Diamond Heist, the most exciting Telegram mini app mining project set to take the crypto world by storm! 
-          With our innovative approach, you’ll dive into a captivating experience that combines gaming and cryptocurrency, all while earning valuable
-          <span className="font-medium text-blue-700"> $DHT (Diamond Heist Tokens)</span>. 
-          With a total supply of <strong>50,000,000 $DHT</strong>, this project is poised to be the biggest talk of the season!
-        </div>
+          With our innovative approach, you'll dive into a captivating experience that combines gaming and cryptocurrency, all while earning valuable
+          <span className="text-blue-400 font-medium"> $DHT (Diamond Heist Tokens)</span>.
+          With a total supply of <span className="font-bold text-blue-300">1,000,000,000 $DHT</span>, this project is poised to be the biggest talk of the season!
+        </p>
+      </div>
 
-        <div className="block mt-4">
-          <strong className="text-green-600">How to Earn $DHT Tokens:</strong>
-          <ol className="list-decimal list-inside mt-2">
-            <li>
-              <span className="font-medium">Complete Referrals:</span> Refer at least <strong>10 friends</strong> to join the Diamond Heist community and unlock exclusive rewards.
-            </li>
-            <li>
-              <span className="font-medium">Rent a Mining Machine:</span> Boost your hash rate to earn more $DHT tokens and maximize your mining potential.
-            </li>
-            <li>
-              <span className="font-medium">Daily Tasks:</span> Engage with rewarding daily tasks to accumulate even more tokens.
-            </li>
-          </ol>
+      {/* How to Earn Section */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-bold text-green-400 flex items-center space-x-2">
+          <Award className="w-6 h-6" />
+          <span>How to Earn $DHT Tokens</span>
+        </h2>
+        <div className="grid gap-4 md:grid-cols-3">
+          <FeatureCard icon={Users} title="Complete Referrals">
+            <p className="text-gray-300">
+              Refer at least <span className="text-green-400 font-bold">10 friends</span> to join the Diamond Heist community and unlock exclusive rewards.
+            </p>
+          </FeatureCard>
+          <FeatureCard icon={Cpu} title="Rent Mining Machines">
+            <p className="text-gray-300">
+              Boost your hash rate to earn more $DHT tokens and maximize your mining potential.
+            </p>
+          </FeatureCard>
+          <FeatureCard icon={CheckSquare} title="Daily Tasks">
+            <p className="text-gray-300">
+              Engage with rewarding daily tasks to accumulate even more tokens.
+            </p>
+          </FeatureCard>
         </div>
+      </div>
 
-        <div className="block mt-4">
-          <strong className="text-purple-400">The Future of Diamond Heist: </strong>
-          Limited token supply and backing from major industry players (details coming soon) make this a project with immense potential. As demand for $DHT grows, so will its value!
+      {/* Future & Early Bird Section */}
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="rounded-lg bg-purple-500/10 p-6 backdrop-blur-sm border border-purple-500/20">
+          <div className="flex items-center space-x-2 mb-3">
+            <Rocket className="w-6 h-6 text-purple-400" />
+            <h2 className="text-xl font-bold text-purple-400">The Future</h2>
+          </div>
+          <p className="text-gray-300">
+            Limited token supply and backing from major industry players (details coming soon) make this a project with immense potential. As demand for $DHT grows, so will its value!
+          </p>
         </div>
+      </div>
 
-        <div className="block mt-4 text-green-400">
-          <strong>Early Bird Rewards:</strong> Join early and earn <strong>500 $DHT tokens</strong> as one of the first 10,000 users!
-        </div>
-
-        <div className="block mt-4">
-          <strong className="text-yellow-600">Why Choose Diamond Heist?</strong>
-          <ul className="list-disc list-inside mt-2 space-y-1">
-            <li>Innovative Mining Experience: A unique blend of gaming and crypto mining.</li>
-            <li>Community Engagement: Be part of a vibrant and active community.</li>
-            <li>Referral Incentives: Earn big rewards through our referral program.</li>
-            <li>Strong Backing: Partnerships with leading crypto companies for guaranteed success.</li>
-          </ul>
-        </div>
-
-        <div className="block mt-6 text-indigo-400">
-          Don’t wait—join the Diamond Heist revolution today! Claim your early bird reward, refer friends, and uncover the treasures of the crypto world.
-        </div>
+      {/* Call to Action */}
+      <div className="text-center bg-gradient-to-r from-indigo-500/20 to-blue-500/20 rounded-lg p-8 backdrop-blur-xl border border-white/10">
+        <p className="text-xl text-indigo-300 mb-4">
+          Don't wait—join the Diamond Heist revolution today!
+        </p>
+        <Link href="/">
+          <button className="group px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 transition-all duration-300 flex items-center space-x-2 mx-auto">
+            <span>Get Started Now</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+          </button>
+        </Link>
       </div>
     </div>
   );
