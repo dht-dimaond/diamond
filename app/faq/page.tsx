@@ -44,7 +44,7 @@ const About = () => {
         </div>
         <p className="text-gray-300 leading-relaxed">
           Prepare for the thrill of a lifetime with Diamond Heist, the most exciting Telegram mini app mining project set to take the crypto world by storm! 
-          With our innovative approach, you'll dive into a captivating experience that combines gaming and cryptocurrency, all while earning valuable
+          With our innovative approach, you will dive into a captivating experience that combines gaming and cryptocurrency, all while earning valuable
           <span className="text-blue-400 font-medium"> $DHT (Diamond Heist Tokens)</span>.
           With a total supply of <span className="font-bold text-blue-300">1,000,000,000 $DHT</span>, this project is poised to be the biggest talk of the season!
         </p>
@@ -91,7 +91,7 @@ const About = () => {
       {/* Call to Action */}
       <div className="text-center bg-gradient-to-r from-indigo-500/20 to-blue-500/20 rounded-lg p-8 backdrop-blur-xl border border-white/10">
         <p className="text-xl text-indigo-300 mb-4">
-          Don't wait—join the Diamond Heist revolution today!
+          Do not wait—join the Diamond Heist revolution today!
         </p>
         <Link href="/">
           <button className="group px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 transition-all duration-300 flex items-center space-x-2 mx-auto">
