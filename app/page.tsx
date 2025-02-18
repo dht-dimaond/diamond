@@ -63,7 +63,7 @@ const HomePage = () => {
   }
 
   return (
-    <div className="min-h-screen p-2">
+    <div className="min-h-screen p-2 w-screen max-w-full overflow-x-hidden">
       <div className="max-w-l mx-auto">
       <div className="flex flex-col gap-4 mt-2 border-2 border-gray-700 rounded-xl p-4 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
         <DHTBalanceCard balance={balance} imageSrc="/coin.png" />
