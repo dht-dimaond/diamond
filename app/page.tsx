@@ -68,7 +68,7 @@ const HomePage = () => {
         <DHTBalanceCard balance={balance} imageSrc="/coin.png" />
         <div className="flex items-center justify-between border-t border-gray-700/50 pt-2">
           <div className="flex items-center space-x-2">
-            <img src="/coin.png" alt="DHT" className="w-6 h-6" />
+            <img src="/coin.png" alt="DHT" className="w-8 h-6" />
             <span className="text-gray-300">DHT </span>
           </div>
           <div className="flex items-center">

@@ -17,8 +17,8 @@ export default function DHTBalanceCard({ balance, imageSrc }: BalanceCardProps) 
         <Image
           src={imageSrc}
           alt="DHT Icon"
-          width={40} // Required: Matches w-13 (13 * 4 = 52)
-          height={40} // Required: Matches h-10 (10 * 4 = 40)
+          width={48} // Required: Matches w-13 (13 * 4 = 52)
+          height={30} // Required: Matches h-10 (10 * 4 = 40)
           className="w-13 h-10" // Optional: Additional styling
         />
         <div className="flex flex-col justify-start px-2">
