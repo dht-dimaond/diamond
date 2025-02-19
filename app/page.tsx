@@ -10,6 +10,7 @@ import TokenDetails from './components/TokenDetails';
 import { useUser } from '@/context/UserContext'; // Adjust the import path
 import { getUserData } from '@/lib/users'; // Adjust the import path
 import { useMining } from '@/context/MiningContext';
+import Image from 'next/image';
 
 
 
@@ -58,7 +59,7 @@ const HomePage = () => {
   }
 
   if (!userData?.id) {
-    return <div>Error: User ID is missing. Please log in again.</div>; // Handle missing userId
+    return <div>Error: User ID is missing. Please log in again.</div> // Handle missing userId
   }
 
   return (
@@ -67,12 +68,17 @@ const HomePage = () => {
       <div className="flex flex-col gap-4 mt-2 border-2 border-gray-700 rounded-xl p-4 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
         <DHTBalanceCard balance={balance} imageSrc="/coin.png" />
         <div className="flex items-center justify-between border-t border-gray-700/50 pt-2">
-          <div className="flex items-center space-x-2">
-            <img src="/coin.png" alt="DHT" className="w-8 h-6" />
-            <span className="text-gray-300">DHT </span>
+          <div className="flex items-center">
+            <Image
+            src="/coin.png"
+            alt="DHT Icon"
+            width={100} 
+            height={25} 
+          />
+            <span className="text-blue-200">$ DHT </span>
           </div>
           <div className="flex items-center">
-            <span className="text-xl font-semibold text-white">$0.80</span>
+            <span className="text-xl font-semibold text-blue-200">$0.80</span>
             <span className="ml-2 px-2 py-1 text-sm bg-green-500/20 text-green-400 rounded-lg flex items-center">
               <span className="mr-1">+</span>2.47%
             </span>

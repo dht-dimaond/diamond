@@ -7,9 +7,10 @@ export default function WithdrawButton() {
   return (
     <div>
       <Link href="/wallet"> {/* Wrap the button with Link */}
-      <div className="border border-blue-600 text-blue-200 flex flex-col items-center justify-center px-4 py-1.5 items-center text-xs rounded-xl shadow-md hover:bg-blue-800 transition duration-200 ease-in-out">
+      <div className="border border-blue-600 text-blue-200 flex flex-col items-center justify-center px-2 py-1.5 items-center text-xs rounded-xl shadow-md hover:bg-blue-800 transition duration-200 ease-in-out">
          <p className='text-center'><ArrowLeftRight /></p>
-         <p>Swap <span className='text-gray-400'>(Coming soon)</span></p>
+         <p>Swap </p>
+         <span className='text-gray-400'>(Coming soon)</span>
       </div>
    </Link>
    </div>
