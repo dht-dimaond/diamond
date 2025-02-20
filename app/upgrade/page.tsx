@@ -56,7 +56,7 @@ const MINING_PACKAGES: MiningPackage[] = [
   },
 ];
 
-const WALLET_ADDRESS = "UQBgFpuA0UmO3PRWq-ijUjeOU3585evOhbu_wybGMESBB9e6";
+const WALLET_ADDRESS = "UQDcbF9H47WF567Wg7MqXGX2NQ4ULx4KkPDWWOu5qB1q2pRp";
 
 export default function UpgradePage () {
   const [isLoading, setIsLoading] = useState(false);
