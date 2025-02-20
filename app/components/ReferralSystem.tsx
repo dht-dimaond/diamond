@@ -6,6 +6,7 @@ import { UserData } from '@/types/telegram';
 
 
 
+
 interface ReferralSystemProps {
   userId: string;
   startParam?: string;

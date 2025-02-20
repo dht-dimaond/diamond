@@ -1,6 +1,3 @@
-import { Timestamp, FieldValue } from 'firebase/firestore';
-
-
 export interface TelegramUser {
     id: number;
     first_name: string;
@@ -19,7 +16,7 @@ export interface TelegramUser {
     isPremium: boolean;
     hashrate: number;
     balance: number;
-    createdAt: Timestamp | FieldValue; // Updated type
+    createdAt: string;
     twitterComplete: boolean;
     twitterRewardClaimed: boolean;
     telegramComplete: boolean;

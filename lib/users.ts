@@ -1,4 +1,4 @@
-import { doc, setDoc, getDoc, updateDoc,collection, addDoc, getDocs, arrayUnion, where, query, serverTimestamp, writeBatch  } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc,collection, addDoc, getDocs, arrayUnion, where, query, writeBatch  } from 'firebase/firestore';
 import { db } from './firebase';
 import { TelegramUser, UserData } from '@/types/telegram';
 import { MiningTransaction } from '@/types/telegram';
@@ -18,7 +18,7 @@ export const saveUserData = async (telegramData: TelegramUser): Promise<void> =>
         isPremium: telegramData.is_premium || false,
         hashrate: 20,
         balance: 0,
-        createdAt: serverTimestamp(), // Use server timestamp on creation
+        createdAt: new Date().toISOString(), // Use server timestamp on creation
         twitterComplete: false,
         twitterRewardClaimed: false,
         telegramComplete: false,
