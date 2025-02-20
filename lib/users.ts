@@ -28,7 +28,9 @@ export const saveUserData = async (telegramData: TelegramUser): Promise<void> =>
         referrals: [],      // Array to store referred users
         referrer: null ,     // To store the ID of user who referred them
         isAmbassador: false,
-        grandPrizeRewardClaimed: false
+        grandPrizeRewardClaimed: false,
+        diamondUsernameComplete: false,  // Add this
+        diamondUsernameRewardClaimed: false,  // Add this
       };
 
       await setDoc(userRef, userData);
@@ -69,7 +71,7 @@ export const getUserData = async (userId: string): Promise<UserData | null> => {
 // New function to complete social mission
 export const completeSocialMission = async (
   userId: string, 
-  platform: 'twitter' | 'telegram'
+  platform: 'twitter' | 'telegram' | 'diamondUsername'
 ): Promise<void> => {
   try {
     const userRef = doc(db, 'users', userId);
@@ -92,7 +94,7 @@ export const completeSocialMission = async (
 // New function to claim mission reward
 export const claimMissionReward = async (
   userId: string,
-  missionType: 'twitter' | 'telegram' | 'referral' | 'grandPrize',
+  missionType: 'twitter' | 'telegram' | 'referral' | 'grandPrize' | 'diamondUsername',
   rewardAmount: number,
   additionalUpdates?: object
 ): Promise<void> => {
@@ -172,7 +174,11 @@ export const handleReferral = async (userId: string, referrerId: string): Promis
     if (!referrerDoc.exists()) {
       return;
     }
-
+    
+    if (userId === referrerId) {
+      throw new Error('Cannot refer yourself');
+    }
+    
     // Update user with referrer
     await updateDoc(userRef, {
       referrer: referrerId

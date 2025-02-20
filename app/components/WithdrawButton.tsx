@@ -1,18 +1,24 @@
 'use client'
 
-import Link from 'next/link'; // Import Link from Next.js
-import { ArrowLeftRight  } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowLeftRight } from 'lucide-react'
 
-export default function WithdrawButton() {
+export default function SwapButton() {
   return (
-    <div>
-      <Link href="/wallet"> {/* Wrap the button with Link */}
-      <div className="border border-blue-600 text-blue-200 flex flex-col items-center justify-center px-2 py-1.5 items-center text-xs rounded-xl shadow-md hover:bg-blue-800 transition duration-200 ease-in-out">
-         <p className='text-center'><ArrowLeftRight /></p>
-         <p>Swap </p>
-         <span className='text-gray-400'>(Coming soon)</span>
+   
+      <div className=" text-blue-200 rounded-xl">
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center gap-1.5">
+            <span className="text-sm font-medium">DHT</span>
+            <ArrowLeftRight size={14} className="text-blue-400" />
+            <span className="text-sm font-medium">TON</span>
+          </div>
+          <Link href="/wallet" className="block">
+           <button className="border border-blue-600 bg-blue-900/20 text-blue-200 rounded-xl shadow-md hover:bg-blue-800/50 transition duration-200 ease-in-out px-6">Swap</button>
+          </Link>
+          <span className="text-[10px] text-gray-400 font-medium">(Coming soon)</span>
+        </div>
       </div>
-   </Link>
-   </div>
- );
+    
+  )
 }

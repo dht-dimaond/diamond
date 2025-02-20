@@ -42,7 +42,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             id: 12345,
             first_name: 'Olumide',
             last_name: 'David',
-            username: 'Jagabanthaprince',
+            username: 'Jagabanthaprince💎',
             language_code: 'en',
             is_premium: true,
             photo_url: 'https://randomuser.me/api/portraits/men/3.jpg',

@@ -76,7 +76,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userData }) => {
               {/* Legal Information */}
               <div className="flex items-center justify-between text-blue-200 backdrop-blur-md bg-white/5 rounded-xl p-4 border border-white/10">
                 <div className="flex items-center justify-between gap-2"> <InformationCircleIcon className="w-5 h-5" />
-                  <Link href="/"><span className='text-white'>Legal Notes</span></Link>
+                  <Link href="/legal"><span className='text-white'>Legal Notes</span></Link>
                 </div>
               </div>
           </div>

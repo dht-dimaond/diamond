@@ -26,6 +26,8 @@ export interface TelegramUser {
     referrer?: string | null;
     isAmbassador: boolean;
     grandPrizeRewardClaimed: boolean;
+    diamondUsernameComplete: boolean;
+    diamondUsernameRewardClaimed: boolean;
   }
   
 

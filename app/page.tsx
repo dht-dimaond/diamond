@@ -86,7 +86,7 @@ const HomePage = () => {
         </div>
       </div>
         
-        <div className="mt-4 mb-4 border-2 border-gray-700 rounded-xl py-6 px-4 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
+        <div className="mt-4 mb-4 border-2 border-gray-700 rounded-xl p-2 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
           <AnimatedCoins isMining={isMining} />
 
           <div className="text-center mb-6">

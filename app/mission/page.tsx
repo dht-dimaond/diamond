@@ -14,8 +14,16 @@ const MissionsPage = () => {
   const [missions, setMissions] = useState({
     twitter: { completed: false, claimed: false },
     telegram: { completed: false, claimed: false },
+    diamondUsername: { completed: false, claimed: false },
     referral: { claimed: false }
   });
+
+
+   // Add this validation function
+   const hasDiamondInUsername = () => {
+    if (!userData?.username) return false;
+    return userData.username.includes('💎');
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -29,8 +37,15 @@ const MissionsPage = () => {
 
         // Get referrals using getUserReferrals
         const referrals = await getUserReferrals(userData.id.toString());
+
+        const diamondCompleted = hasDiamondInUsername(); // <-- This was missing
         
-        setMissions({
+        setMissions(prev =>({
+          ...prev,
+          diamondUsername: {
+            completed: diamondCompleted || userDoc.diamondUsernameComplete,
+            claimed: userDoc.diamondUsernameRewardClaimed
+          },
           twitter: {
             completed: userDoc.twitterComplete,
             claimed: userDoc.twitterRewardClaimed
@@ -42,7 +57,13 @@ const MissionsPage = () => {
           referral: {
             claimed: userDoc.referralRewardClaimed
           }
-        });
+        }));
+
+        // Sync with Firebase if needed
+        if (diamondCompleted && !userDoc.diamondUsernameComplete) {
+          await completeSocialMission(userData.id.toString(), 'diamondUsername');
+        }
+
         
         setReferralCount(referrals.length);
         
@@ -77,7 +98,7 @@ const MissionsPage = () => {
     }
   };
 
-  const handleClaimReward = async (type: 'twitter' | 'telegram' | 'referral') => {
+  const handleClaimReward = async (type: 'twitter' | 'telegram' | 'referral' | 'diamondUsername') => {
     if (!userData?.id) return;
     
     if (type === 'referral' && referralCount < 5) return;
@@ -85,7 +106,9 @@ const MissionsPage = () => {
     if ((type === 'twitter' || type === 'telegram') && !missions[type].completed) return;
     
     try {
-      await claimMissionReward(userData.id.toString(), type, 100);
+      const amount = type === 'diamondUsername' ? 500 : 100; // Example different reward
+      await claimMissionReward(userData.id.toString(), type, amount);
+    
       
       setMissions(prev => ({
         ...prev,
@@ -280,6 +303,50 @@ const MissionsPage = () => {
               </div>
             </div>
           ))}
+              {/* Diamond Username Mission */}
+              <div className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg py-6 px-4 backdrop-blur-md shadow-md w-full max-w-full">
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg space-x-2 font-semibold text-white">
+                      Add the Diamond 💎 emoji to your username
+                      <span className="px-3 py-1 text-xs rounded-full bg-purple-800/30 text-purple-400">
+                        +500 DHT
+                      </span>
+                    </h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-300">
+                        {missions.diamondUsername.completed 
+                          ? `Current username: @${userData?.username}`
+                          : 'Add 💎 to your Telegram username'}
+                      </span>
+                      {missions.diamondUsername.completed && !missions.diamondUsername.claimed && (
+                        <span className="text-purple-400 animate-pulse">Reward Ready!</span>
+                      )}
+                    </div>
+                    <div className="flex gap-3">
+                      <div className="flex-1 px-4 py-2 text-gray-300 text-sm">
+                        {missions.diamondUsername.completed 
+                          ? '💎 Diamond username detected!'
+                          : '1. Add 💎 to your username\n2. Restart the app'}
+                      </div>
+                      <button
+                        onClick={() => handleClaimReward('diamondUsername')}
+                        disabled={!missions.diamondUsername.completed || missions.diamondUsername.claimed}
+                        className={`px-4 w-1/3 py-2 font-semibold text-white text-sm transition-all rounded-lg ${
+                          (!missions.diamondUsername.completed || missions.diamondUsername.claimed)
+                            ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-purple-500 to-pink-600 animate-pulse'
+                        }`}
+                      >
+                        {missions.diamondUsername.claimed ? 'Claimed' : 'Claim'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
         </div>
       </div>
     </div>
