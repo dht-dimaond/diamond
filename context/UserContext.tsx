@@ -41,8 +41,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           const simulatedUser: TelegramUser = {
             id: 12345,
             first_name: 'Olumide',
-            last_name: 'David',
-            username: 'Jagabanthaprince💎',
+            last_name: 'David💎',
+            username: 'Jagabanthaprince',
             language_code: 'en',
             is_premium: true,
             photo_url: 'https://randomuser.me/api/portraits/men/3.jpg',

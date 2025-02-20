@@ -1,4 +1,4 @@
-import { doc, setDoc, getDoc, updateDoc,collection, addDoc, getDocs, arrayUnion, where, query  } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc,collection, addDoc, getDocs, arrayUnion, where, query, serverTimestamp, writeBatch  } from 'firebase/firestore';
 import { db } from './firebase';
 import { TelegramUser, UserData } from '@/types/telegram';
 import { MiningTransaction } from '@/types/telegram';
@@ -18,25 +18,50 @@ export const saveUserData = async (telegramData: TelegramUser): Promise<void> =>
         isPremium: telegramData.is_premium || false,
         hashrate: 20,
         balance: 0,
-        createdAt: new Date().toISOString(),
+        createdAt: serverTimestamp(), // Use server timestamp on creation
         twitterComplete: false,
         twitterRewardClaimed: false,
         telegramComplete: false,
         telegramRewardClaimed: false,
         referralRewardClaimed: false,
-         // New fields for referral system
         referrals: [],      // Array to store referred users
         referrer: null ,     // To store the ID of user who referred them
         isAmbassador: false,
         grandPrizeRewardClaimed: false,
-        diamondUsernameComplete: false,  // Add this
-        diamondUsernameRewardClaimed: false,  // Add this
+        diamondlastnameComplete: false,  // Add this
+        diamondlastnameRewardClaimed: false,  // Add this
       };
 
       await setDoc(userRef, userData);
     }
   } catch (error) {
     console.error('Error saving user data:', error);
+    throw error;
+  }
+};
+
+// If you need to update all existing users with new fields
+export const updateAllUsers = async (): Promise<void> => {
+  try {
+    const usersRef = collection(db, 'users');
+    const querySnapshot = await getDocs(usersRef);
+
+    const batch = writeBatch(db);
+    const defaultNewFields = {
+      // Add your new fields here with default values
+        diamondlastnameComplete: false,  // Add this
+        diamondlastnameRewardClaimed: false,  // Add this
+    };
+
+    querySnapshot.forEach((document) => {
+      const userRef = doc(db, 'users', document.id);
+      batch.set(userRef, defaultNewFields, { merge: true });
+    });
+
+    await batch.commit();
+    console.log('All users updated with new fields');
+  } catch (error) {
+    console.error('Error updating all users:', error);
     throw error;
   }
 };
@@ -71,7 +96,7 @@ export const getUserData = async (userId: string): Promise<UserData | null> => {
 // New function to complete social mission
 export const completeSocialMission = async (
   userId: string, 
-  platform: 'twitter' | 'telegram' | 'diamondUsername'
+  platform: 'twitter' | 'telegram' | 'diamondlastname'
 ): Promise<void> => {
   try {
     const userRef = doc(db, 'users', userId);
@@ -94,7 +119,7 @@ export const completeSocialMission = async (
 // New function to claim mission reward
 export const claimMissionReward = async (
   userId: string,
-  missionType: 'twitter' | 'telegram' | 'referral' | 'grandPrize' | 'diamondUsername',
+  missionType: 'twitter' | 'telegram' | 'referral' | 'grandPrize' | 'diamondlastname',
   rewardAmount: number,
   additionalUpdates?: object
 ): Promise<void> => {
@@ -178,7 +203,7 @@ export const handleReferral = async (userId: string, referrerId: string): Promis
     if (userId === referrerId) {
       throw new Error('Cannot refer yourself');
     }
-    
+
     // Update user with referrer
     await updateDoc(userRef, {
       referrer: referrerId
