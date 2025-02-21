@@ -8,6 +8,7 @@ import Ticker from "./components/Ticker";
 import StarField from "./components/StarField";
 import Bar from "./components/Bar";
 import { MiningProvider } from '@/context/MiningContext';
+import { Analytics } from "@vercel/analytics/react"
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <div className="flex-grow overflow-y-auto pb-20 relative z-10">
                 <MiningProvider>
                  {children}
+                 <Analytics />
                 </MiningProvider>
               </div>
 
