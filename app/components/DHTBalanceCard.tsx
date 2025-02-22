@@ -16,7 +16,7 @@ export default function DHTBalanceCard({ balance }: BalanceCardProps) {
      
         <div className="flex flex-col justify-start">
           <span className="text-xs font-semibold text-gray-400">DHT Balance</span>
-          <span className="text-lg font-semibold text-gray-200">{Math.floor(balance)} <span className="text-sm font-semibold text-blue-200">$DHT</span> </span>
+          <span className="text-lg text-gray-200">{balance >= 1000 ? (balance / 1000).toFixed(1).replace(".0", "") + "k" : Math.floor(balance)}<span className="text-sm font-semibold text-blue-200"> $DHT</span> </span>
         </div>
       </div>
       {/* Right: Withdraw Button */}
