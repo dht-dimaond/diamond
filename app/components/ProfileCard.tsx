@@ -59,26 +59,32 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userData }) => {
                 <span className="text-blue-100 font-medium">{userData.language_code || "en"}</span>
               </div>
               {/* Invite */}
-              <div className="flex items-center justify-between text-blue-200 backdrop-blur-md bg-white/5 rounded-xl p-4 border border-white/10">
-                  <div className="flex items-center justify-between gap-2"> <HeartIcon className="w-5 h-5" />
-                  <Link href="/invite"><span className='text-white'> Invite Friends</span></Link></div>
-              </div>
+              <Link href="/invite">
+                <div className="flex items-center justify-between text-blue-200 backdrop-blur-md bg-white/5 rounded-xl p-4 border border-white/30 animate-pulse">
+                    <div className="flex items-center justify-between gap-2"> <HeartIcon className="w-5 h-5" />
+                    <span className='text-white'> Invite Friends</span></div>
+                </div>
+              </Link>
               {/* Contact Support */}
               <div className="flex items-center justify-between text-blue-200 backdrop-blur-md bg-white/5 rounded-xl p-4 border border-white/10">
                   <div className="flex items-center justify-between gap-2"> <ChatBubbleLeftRightIcon className="w-5 h-5" />
                   <span className='text-white'> Contact Support</span></div>
               </div>
               {/* FAQ */}
-              <div className="flex items-center justify-between text-blue-200 backdrop-blur-md bg-white/5 rounded-xl p-4 border border-white/10">
-                  <div className="flex items-center justify-between gap-2"> <QuestionMarkCircleIcon className="w-5 h-5" />
-                  <Link href="/faq"><span className='text-white'>FAQ</span></Link></div>
-              </div>
-              {/* Legal Information */}
-              <div className="flex items-center justify-between text-blue-200 backdrop-blur-md bg-white/5 rounded-xl p-4 border border-white/10">
-                <div className="flex items-center justify-between gap-2"> <InformationCircleIcon className="w-5 h-5" />
-                  <Link href="/legal"><span className='text-white'>Legal Notes</span></Link>
+              <Link href="/faq">
+                <div className="flex items-center justify-between text-blue-200 animate-pulse backdrop-blur-md bg-white/5 rounded-xl p-4 border border-white/10">
+                    <div className="flex items-center justify-between gap-2"> <QuestionMarkCircleIcon className="w-5 h-5" />
+                    <span className='text-white'>FAQ</span></div>
                 </div>
-              </div>
+              </Link>
+              {/* Legal Information */}
+              <Link href="/legal">
+                <div className="flex items-center justify-between text-blue-200 backdrop-blur-md bg-white/5 animate-pulse rounded-xl p-4 border border-white/10">
+                  <div className="flex items-center justify-between gap-2"> <InformationCircleIcon className="w-5 h-5" />
+                    <span className='text-white'>Legal Notes</span>
+                  </div>
+               </div>
+             </Link>
           </div>
       </div>
   );

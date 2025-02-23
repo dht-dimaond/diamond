@@ -106,7 +106,7 @@ const MissionsPage = () => {
     if ((type === 'twitter' || type === 'telegram') && !missions[type].completed) return;
     
     try {
-      const amount = type === 'diamondlastname' ? 500 : 100; // Example different reward
+      const amount = type === 'diamondlastname' ? 200 : 50; 
       await claimMissionReward(userData.id.toString(), type, amount);
     
       
@@ -150,10 +150,10 @@ const MissionsPage = () => {
   
 
   return (
-    <div className="min-h-screen p-4">
+    <div className="min-h-screen p-2">
       <div className="max-w-3xl mx-auto space-y-8">
         {/* Grand Prize Section */}
-        <div className="relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-amber-900/30 to-amber-800/10 border border-amber-800/50">
+        <div className="relative overflow-hidden rounded-2xl p-4 bg-gradient-to-br from-amber-900/30 to-amber-800/10 border border-amber-800/50">
           <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10" />
           <div className="relative z-10 text-center">
             <h2 className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
@@ -186,7 +186,7 @@ const MissionsPage = () => {
         
         {/* Ambassador Badge - only shown when isAmbassador is true */}
         {isAmbassador && (
-          <div className="relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-amber-700/30 to-amber-600/10 border border-amber-600/50">
+          <div className="relative overflow-hidden rounded-2xl p-4 bg-gradient-to-br from-amber-700/30 to-amber-600/10 border border-amber-600/50">
             <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10" />
             <div className="relative z-10 text-center">
               <div className="flex items-center justify-center mb-2">
@@ -205,7 +205,7 @@ const MissionsPage = () => {
         )}
 
         {/* Missions Grid */}
-        <div className="gap-6 flex flex-col border-2 border-gray-700 rounded-xl p-6 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
+        <div className="gap-6 flex flex-col border-2 border-gray-700 rounded-xl p-4 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
           {/* Referral Mission Card */}
           <div className=" rounded-xl p-6 border border-gray-700/50 bg-gradient-to-b from-gray-800 via-gray-800 to-gray-1000 rounded-lg backdrop-blur-md shadow-md w-full max-w-full">
             <div className="flex flex-col w-full max-w-full gap-4">
@@ -228,7 +228,7 @@ const MissionsPage = () => {
                     />
                   </div>
                 </div>
-                <div className="flex gap-3 flex-wrap">
+                <div className="flex flex-col gap-3 flex-wrap">
                   <Link
                     href="/invite"
                     className="flex-1 px-4 py-2 text-center rounded-lg bg-gradient-to-r from-blue-400 to-amber-600 animate-pulse shadow-lg shadow-blue-500/50 animate-pulse"
@@ -250,7 +250,7 @@ const MissionsPage = () => {
           {/* Social Mission Cards */}
           {[
             { type: 'telegram' as const, url: 'https://t.me/+PMWu-iBnsGg2NDM0', label: 'Join Telegram Channel' },
-            { type: 'twitter' as const, url: 'https://x.com/diamondhiest?s=11', label: 'Follow us on(X) Twitter' }
+            { type: 'twitter' as const, url: 'https://x.com/diamondhiest?s=11', label: 'Follow us on X' }
           ].map(({ type, url, label }) => (
             <div key={type} className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg py-6 px-4 backdrop-blur-md shadow-md w-full max-w-full">
               <div className="flex flex-col gap-4">
@@ -258,7 +258,7 @@ const MissionsPage = () => {
                   <h3 className="text-lg space-x-2 font-semibold text-white">
                     {label}  
                     <span className="px-3 py-1 text-xs rounded-full bg-amber-800/30 text-amber-400">
-                      +100 DHT
+                      +50 DHT
                     </span>
                   </h3>
                  
@@ -310,7 +310,7 @@ const MissionsPage = () => {
                     <h3 className="text-lg space-x-2 font-semibold text-white">
                       Add the💎 emoji to your Lastname
                       <span className="px-3 py-1 text-xs rounded-full bg-purple-800/30 text-purple-400">
-                        +500 DHT
+                        +200 DHT
                       </span>
                     </h3>
                   </div>
@@ -325,7 +325,7 @@ const MissionsPage = () => {
                         <span className="text-purple-400 animate-pulse">Reward Ready!</span>
                       )}
                     </div>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col gap-3">
                       <div className="flex-1 px-4 py-2 text-gray-300 text-sm">
                         {missions.diamondlastname.completed 
                           ? 'Diamond 💎 Emoji in Lastname detected!'
@@ -334,7 +334,7 @@ const MissionsPage = () => {
                       <button
                         onClick={() => handleClaimReward('diamondlastname')}
                         disabled={!missions.diamondlastname.completed || missions.diamondlastname.claimed}
-                        className={`px-4 w-1/3 py-2 font-semibold text-white text-sm transition-all rounded-lg ${
+                        className={`flex-1 px-4 py-2 overflow-hidden font-semibold text-white text-sm transition-all duration-300 rounded-lg cursor-pointer ${
                           (!missions.diamondlastname.completed || missions.diamondlastname.claimed)
                             ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
                             : 'bg-gradient-to-r from-purple-500 to-pink-600 animate-pulse'

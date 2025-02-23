@@ -119,7 +119,7 @@ export const useMiningLogic = ({
             cleanupMining();
             setIsMining(false);
             localStorage.removeItem('miningProgress');
-            alert('Congratulations! You have mined $1000 DHT tokens. To continue mining, claim your DHT.');
+            alert('Congratulations! You have mined $100 DHT tokens. To continue mining, claim your DHT.');
             return MAX_MINABLE_AMOUNT;
           }
           // Update progress in localStorage

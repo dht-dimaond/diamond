@@ -93,7 +93,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
               <img
                 src="/coin.png"
                 alt="coin"
-                className="w-12 h-12" // Made coins slightly larger
+                className="w-8 h-6" // Made coins slightly larger
               />
             </div>
           ))}

@@ -63,8 +63,10 @@ const About = () => {
             </p>
           </FeatureCard>
           <FeatureCard icon={Cpu} title="Rent Mining Machines">
+          <h3 className="text-red-400 text-xl font-bold">Important note!!!</h3>
             <p className="text-gray-300">
-              Boost your hash rate to earn more $DHT tokens and maximize your mining potential.
+              The worth of your hasrate is measured by how long it would take to mine 1000 tokens. Your miner stops after you have succesfully mined up to 100 tokens and can only be reactivated after you have claimed your tokens.
+              Mine with the default hashrate or Boost your hash rate to earn more $DHT tokens faster and maximize your mining potential.
             </p>
           </FeatureCard>
           <FeatureCard icon={CheckSquare} title="Daily Tasks">

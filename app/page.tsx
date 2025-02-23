@@ -11,7 +11,7 @@ import { useUser } from '@/context/UserContext'; // Adjust the import path
 import { getUserData } from '@/lib/users'; // Adjust the import path
 import { useMining } from '@/context/MiningContext';
 import Image from 'next/image';
-
+import Tokenomics from './components/Tokennomics';
 
 
 const HomePage = () => {
@@ -161,6 +161,7 @@ const HomePage = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 mt-4 border-2 border-gray-700 rounded-xl p-6 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
+         <Tokenomics />
           <TokenDetails
             name="Diamond Heist"
             symbol="$DHT"
