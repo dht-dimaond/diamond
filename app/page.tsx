@@ -78,9 +78,9 @@ const HomePage = () => {
             <span className="text-blue-200">$ DHT </span>
           </div>
           <div className="flex items-center">
-            <span className="text-xl font-semibold text-blue-200">$0.80</span>
-            <span className="ml-2 px-2 py-1 text-sm bg-green-500/20 text-green-400 rounded-lg flex items-center">
-              <span className="mr-1">+</span>2.47%
+            <span className="text-xl font-semibold text-blue-200">$0.78</span>
+            <span className="ml-2 px-2 py-1 text-sm bg-red-500/20 text-red-400 rounded-lg flex items-center">
+              <span className="mr-1">-</span>0.17%
             </span>
           </div>
         </div>
