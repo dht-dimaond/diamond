@@ -257,7 +257,7 @@ const MissionsPage = () => {
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg space-x-2 font-semibold text-white">
                     {label}  
-                    <span className="px-3 py-1 text-xs rounded-full bg-amber-800/30 text-amber-400">
+                    <span className="text-sm rounded-full bg-amber-800/30 text-amber-400">
                       +50 DHT
                     </span>
                   </h3>
@@ -309,7 +309,7 @@ const MissionsPage = () => {
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg space-x-2 font-semibold text-white">
                       Add the💎 emoji to your Lastname
-                      <span className="px-3 py-1 text-xs rounded-full bg-purple-800/30 text-purple-400">
+                      <span className=" text-sm rounded-full bg-purple-800/30 text-purple-400">
                         +200 DHT
                       </span>
                     </h3>
