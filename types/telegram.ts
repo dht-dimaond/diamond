@@ -28,6 +28,8 @@ export interface TelegramUser {
     grandPrizeRewardClaimed: boolean;
     diamondlastnameComplete: boolean;
     diamondlastnameRewardClaimed: boolean;
+    
+    
   }
   
 
@@ -67,3 +69,4 @@ export interface MiningTransaction {
   validity: string;   
   item: string | number;          
 }
+

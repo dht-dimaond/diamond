@@ -30,6 +30,8 @@ export const saveUserData = async (telegramData: TelegramUser): Promise<void> =>
         grandPrizeRewardClaimed: false,
         diamondlastnameComplete: false,  // Add this
         diamondlastnameRewardClaimed: false,  // Add this
+
+        
       };
 
       await setDoc(userRef, userData);
@@ -39,6 +41,7 @@ export const saveUserData = async (telegramData: TelegramUser): Promise<void> =>
     throw error;
   }
 };
+
 
 // If you need to update all existing users with new fields
 export const updateAllUsers = async (): Promise<void> => {
