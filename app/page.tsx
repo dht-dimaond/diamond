@@ -12,6 +12,7 @@ import { getUserData } from '@/lib/users'; // Adjust the import path
 import { useMining } from '@/context/MiningContext';
 import Image from 'next/image';
 import Tokenomics from './components/Tokennomics';
+import PriceComponent from './components/PriceComponent';
 
 
 const HomePage = () => {
@@ -77,12 +78,7 @@ const HomePage = () => {
           />
             <span className="text-blue-200">$ DHT </span>
           </div>
-          <div className="flex items-center">
-            <span className="text-xl font-semibold text-blue-200">$0.78</span>
-            <span className="ml-2 px-2 py-1 text-sm bg-red-500/20 text-red-400 rounded-lg flex items-center">
-              <span className="mr-1">-</span>0.17%
-            </span>
-          </div>
+          <PriceComponent />
         </div>
       </div>
         
