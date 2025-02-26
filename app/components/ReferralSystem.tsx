@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUserData, getUserReferrals, handleReferral, getReferrerData, getReferralsWithDetails } from '@/lib/users';
+import { getUserData,  handleReferral, getReferrerData, getReferralsWithDetails } from '@/lib/users';
 import { Share2, Copy, Users, Gift, User } from 'lucide-react';
 import { UserData } from '@/types/telegram';
 
@@ -18,6 +18,7 @@ const ReferralSystem: React.FC<ReferralSystemProps> = ({ userId, startParam, ini
   const [referrer, setReferrer] = useState<UserData | null>(null);
   const [showCopied, setShowCopied] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const INVITE_URL = "https://t.me/Diamondheistbot/DHT";
 
@@ -25,27 +26,38 @@ const ReferralSystem: React.FC<ReferralSystemProps> = ({ userId, startParam, ini
     const loadReferralData = async () => {
       try {
         setLoading(true);
+        setError(null);
+        
+        // Load base user data first
         const userData = await getUserData(userId);
         
-        if (userData) {
-          const [referralsData, referrerData] = await Promise.all([
-            getReferralsWithDetails(userId),
-            userData.referrer ? getReferrerData(userId) : Promise.resolve(null)
-          ]);
-          
-          // Now TypeScript knows these are UserData arrays/objects
-          setReferrals(referralsData);
-          setReferrer(referrerData);
+        // Process referral if startParam exists and user doesn't have referrer
+        if (startParam && !userData?.referrer) {
+          try {
+            await handleReferral(userId, startParam);
+          } catch (referralError) {
+            console.error('Referral processing failed:', referralError);
+            setError('Failed to process referral. Please try again.');
+          }
         }
 
-        if (startParam && !userData?.referrer) {
-          await handleReferral(userId, startParam);
-          // Refresh data after handling referral
-          const newReferrer = await getReferrerData(userId);
-          setReferrer(newReferrer);
+        // Refresh all data after potential referral processing
+        const [updatedUser, freshReferrals, freshReferrer] = await Promise.all([
+          getUserData(userId),
+          getReferralsWithDetails(userId),
+          userData?.referrer ? getReferrerData(userId) : Promise.resolve(null)
+        ]);
+
+        // Validate referral relationship was stored
+        if (startParam && !updatedUser?.referrer) {
+          setError('Referral could not be processed. Please contact support.');
         }
+
+        setReferrals(freshReferrals);
+        setReferrer(freshReferrer);
       } catch (error) {
         console.error('Error loading referral data:', error);
+        setError('Failed to load referral data. Please refresh the page.');
       } finally {
         setLoading(false);
       }
@@ -53,6 +65,7 @@ const ReferralSystem: React.FC<ReferralSystemProps> = ({ userId, startParam, ini
 
     loadReferralData();
   }, [userId, startParam]);
+
 
   const handleInviteFriend = () => {
     const inviteLink = `${INVITE_URL}?startapp=${userId}`;
@@ -82,6 +95,14 @@ const ReferralSystem: React.FC<ReferralSystemProps> = ({ userId, startParam, ini
 
   return (
     <div className="w-full max-w-full p-4 space-y-6">
+
+       {/* Error Message */}
+       {error && (
+        <div className="rounded-lg bg-red-500/20 p-4 border border-red-500/50">
+          <p className="text-red-300">{error}</p>
+        </div>
+      )}
+
       {/* Referrer Info */}
       {referrer && (
     <div className="relative overflow-hidden rounded-lg bg-gradient-to-r from-blue-500/20 to-blue-800/50 p-4 border border-white/10">
