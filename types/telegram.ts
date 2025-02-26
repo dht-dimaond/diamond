@@ -28,7 +28,6 @@ export interface TelegramUser {
     grandPrizeRewardClaimed: boolean;
     diamondlastnameComplete: boolean;
     diamondlastnameRewardClaimed: boolean;
-    referralsCount: number;
     
   }
   
