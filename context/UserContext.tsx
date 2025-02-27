@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { saveUserData } from '@/lib/users';
+import { saveUserData, handleReferral } from '@/lib/users';
 import { TelegramUser } from '@/types/telegram';
 
 declare global {
@@ -23,22 +23,35 @@ interface UserContextType {
   isLoading: boolean;
   start_param?: string;
   initData: string;
+  referralProcessed: boolean;
 }
 
-const UserContext = createContext<UserContextType>({ initData: '', userData: null, isLoading: true, start_param: '' });
+const UserContext = createContext<UserContextType>({ 
+  initData: '', 
+  userData: null, 
+  isLoading: true, 
+  start_param: '',
+  referralProcessed: false 
+});
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [userData, setUserData] = useState<TelegramUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [start_param, setStartParam] = useState('');
   const [initData, setInitData] = useState('');
+  const [referralProcessed, setReferralProcessed] = useState(false);
+  const [referralError, setReferralError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAndSaveUserData = async () => {
       try {
+        let user: TelegramUser;
+        let startParam = '';
+        let initDataStr = '';
+
         if (process.env.NODE_ENV === 'development') {
           // Simulate Telegram data for local testing
-          const simulatedUser: TelegramUser = {
+          user = {
             id: 12345,
             first_name: 'Olumide',
             last_name: 'David💎',
@@ -47,32 +60,44 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             is_premium: true,
             photo_url: 'https://randomuser.me/api/portraits/men/3.jpg',
           };
-          const simulatedStartParam = '67890'; // Simulate a referrer ID
-          const simulatedInitData = 'simulated_init_data';
-
-          // Save simulated user data to Firebase
-          await saveUserData(simulatedUser);
-
-          // Set simulated data in context
-          setUserData(simulatedUser);
-          setStartParam(simulatedStartParam);
-          setInitData(simulatedInitData);
+          startParam = '67890'; // Simulate a referrer ID
+          initDataStr = 'simulated_init_data';
         } else {
           // Fetch real data from Telegram (for production)
           if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
             const webAppData = window.Telegram.WebApp.initDataUnsafe;
 
             if (webAppData.user) {
-              // Save user data to Firebase
-              await saveUserData(webAppData.user);
-
-              // Set user data in context
-              setUserData(webAppData.user);
-              setStartParam(webAppData.start_param || '');
-              setInitData(webAppData.initData);
+              user = webAppData.user;
+              startParam = webAppData.start_param || '';
+              initDataStr = webAppData.initData;
+            } else {
+              throw new Error('No user data available from Telegram WebApp');
             }
+          } else {
+            throw new Error('Telegram WebApp not available');
           }
         }
+
+        // Save user data to Firebase
+        await saveUserData(user);
+
+        // Process referral if start_param exists
+        if (startParam) {
+          try {
+            await handleReferral(user.id.toString(), startParam);
+            setReferralProcessed(true);
+          } catch (referralError) {
+            console.error('Referral processing failed:', referralError);
+            setReferralError('Failed to process referral');
+            setReferralProcessed(false);
+          }
+        }
+
+        // Set user data in context
+        setUserData(user);
+        setStartParam(startParam);
+        setInitData(initDataStr);
       } catch (error) {
         console.error('Error fetching or saving user data:', error);
       } finally {
@@ -84,7 +109,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   return (
-    <UserContext.Provider value={{ initData, userData, isLoading, start_param }}>
+    <UserContext.Provider value={{ 
+      initData, 
+      userData, 
+      isLoading, 
+      start_param,
+      referralProcessed 
+    }}>
       {children}
     </UserContext.Provider>
   );
