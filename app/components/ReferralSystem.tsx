@@ -34,6 +34,7 @@ const ReferralSystem: React.FC<ReferralSystemProps> = ({ userId, startParam, ini
         // Process referral if startParam exists and user doesn't have referrer
         if (startParam && !userData?.referrer) {
           try {
+            
             await handleReferral(userId, startParam);
           } catch (referralError) {
             console.error('Referral processing failed:', referralError);

@@ -191,14 +191,41 @@ export const handleReferral = async (userId: string, referrerId: string): Promis
     
     // Check if user exists and hasn't been referred yet
     const userDoc = await getDoc(userRef);
-    if (!userDoc.exists() || userDoc.data().referrer) {
+
+
+   if (!userDoc.exists()) {
+      // Create complete default user data
+      const userData: UserData = {
+        telegramId: parseInt(userId),
+        username: '',
+        firstName: '',
+        lastName: '',
+        isPremium: false,
+        hashrate: 20,
+        balance: 0,
+        createdAt: new Date().toISOString(),
+        twitterComplete: false,
+        twitterRewardClaimed: false,
+        telegramComplete: false,
+        telegramRewardClaimed: false,
+        referralRewardClaimed: false,
+        referrals: [],
+        referrer: null,
+        isAmbassador: false,
+        grandPrizeRewardClaimed: false,
+        diamondlastnameComplete: false,
+        diamondlastnameRewardClaimed: false,
+      };
+      
+      await setDoc(userRef, userData);
+    } else if (userDoc.data().referrer) {
+      // User already has a referrer
       return;
     }
-
     // Check if referrer exists
     const referrerDoc = await getDoc(referrerRef);
     if (!referrerDoc.exists()) {
-      return;
+      throw new Error('Referrer not found');
     }
     
     if (userId === referrerId) {
