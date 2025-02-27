@@ -8,13 +8,12 @@ import {
   useTonWallet 
 } from '@tonconnect/ui-react';
 import { CHAIN } from '@tonconnect/protocol';
-import {  MiningTransaction } from '@/types/telegram'; 
+import { MiningTransaction } from '@/types/telegram'; 
 import TransactionsList from '../components/Transactions';
 import { useUser } from '@/context/UserContext'; 
 import { fetchUserTransactions, saveMiningTransaction } from '@/lib/users';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase'; // Adjust this import based on your firebase config location
-
+import { db } from '@/lib/firebase';
 
 interface MiningPackage {
   id: number;
@@ -22,7 +21,7 @@ interface MiningPackage {
   timeToMine: string;
   priceTON: number;
   bonusPercentage: string;
-  bonusReturn:string;
+  bonusReturn: string;
   Validity: string;
 }
 
@@ -33,7 +32,7 @@ const MINING_PACKAGES: MiningPackage[] = [
     timeToMine: "3 hours",
     priceTON: 1.3,
     bonusPercentage: "80% of purchase price earned at the end of validity",
-    bonusReturn:"1.03 TON",
+    bonusReturn: "1.03 TON",
     Validity: "30 days",
   },
   {
@@ -42,7 +41,7 @@ const MINING_PACKAGES: MiningPackage[] = [
     timeToMine: "2 hours",
     priceTON: 2.5,
     bonusPercentage: "100% of purchase price earned at the end of validity",
-    bonusReturn:"2.5 TON",
+    bonusReturn: "2.5 TON",
     Validity: "30 days",
   },
   {
@@ -51,119 +50,139 @@ const MINING_PACKAGES: MiningPackage[] = [
     timeToMine: "1 hour",
     priceTON: 4.2,
     bonusPercentage: "150% of purchase price earned at the end of validity",
-    bonusReturn:"6.3 TON",
+    bonusReturn: "6.3 TON",
     Validity: "30 days",
   },
 ];
 
 const WALLET_ADDRESS = "UQDcbF9H47WF567Wg7MqXGX2NQ4ULx4KkPDWWOu5qB1q2pRp";
 
-export default function UpgradePage () {
+export default function UpgradePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [transactions, setTransactions] = useState<any[]>([]);
+  const [selectedPackage, setSelectedPackage] = useState<MiningPackage | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const [tonConnectUI] = useTonConnectUI();
   const address = useTonAddress();
   const wallet = useTonWallet();
 
-// get userdata from context
-
   const { userData, isLoading: userLoading } = useUser();
   const walletDevice = wallet?.device.appName ?? 'No wallet connected';
   const shortAddress = address ? `${address.slice(0, 4)}...${address.slice(-4)}` : 'Connect wallet';
 
-    // Load transactions on mount or when userData changes
-    useEffect(() => {
-      if (!userData) return;
-      
-      const loadTransactions = async () => {
-        try {
-          // Use the Telegram user ID (converted to string) as your user identifier
-          const userId = userData.id.toString();
-          const userTransactions = await fetchUserTransactions(userId);
-          setTransactions(userTransactions);
-        } catch (err) {
-          console.error("Error loading transactions:", err);
-        }
-      };
-  
-      loadTransactions();
-    }, [userData]);
-
-    const handlePurchase = async (pkg: MiningPackage) => {
-      if (!wallet) {
-        setError('Please connect your wallet first');
-        return;
-      }
+  // Load transactions on mount or when userData changes
+  useEffect(() => {
+    if (!userData) return;
     
-      // Ensure that the user data is available from context
-      if (!userData) {
-        setError("User data is not loaded yet");
-        return;
-      }
-    
-      const userId = userData.id.toString(); // Use Telegram user id as string
-    
-      setIsLoading(true);
-      setError(null);
-      setSuccess(false);
-    
+    const loadTransactions = async () => {
       try {
-        const result = await tonConnectUI.sendTransaction({
-          validUntil: Math.floor(Date.now() / 1000) + 60,
-          network: CHAIN.MAINNET,
-          messages: [{
-            address: WALLET_ADDRESS,
-            amount: BigInt(pkg.priceTON * 1e9).toString()
-          }]
-        });
-    
-        if (result) {
-          try {
-            // Update user's hashrate in the database
-            const userRef = doc(db, 'users', userId);
-            await updateDoc(userRef, {
-              hashrate: pkg.hashRate
-            });
-    
-            // Create shortened boc code
-            const shortBoc = result.boc ? `${result.boc.slice(0, 4)}...${result.boc.slice(-4)}` : 'No Code available';
-    
-            // Create transaction details
-            const transactionDetails: MiningTransaction = {
-              userId: userId,
-              packageId: pkg.id,
-              hashRate: pkg.hashRate,
-              priceTON: pkg.priceTON,
-              amount: pkg.priceTON,
-              date: new Date().toISOString(),
-              boc: shortBoc,
-              validity: pkg.Validity,
-              item: pkg.hashRate
-            };
-    
-            // Save the transaction to Firestore in the subcollection of the user
-            await saveMiningTransaction(userId, transactionDetails);
-    
-            setSuccess(true);
-            setTransactions(prev => [...prev, transactionDetails]);
-            console.log('Transaction and hashrate update successful:', result);
-          } catch (dbError) {
-            console.error('Database update failed:', dbError);
-            setError('Transaction successful but failed to update hashrate. Please contact support.');
-          }
-        } else {
-          setError('Transaction failed: Invalid result');
-        }
-      } catch (err: any) {
-        console.error('Transaction failed:', err);
-        setError('Purchase failed. Make sure you have sufficient balance or connect with a different TON wallet.');
-      } finally {
-        setIsLoading(false);
+        const userId = userData.id.toString();
+        const userTransactions = await fetchUserTransactions(userId);
+        setTransactions(userTransactions);
+      } catch (err) {
+        console.error("Error loading transactions:", err);
       }
     };
+
+    loadTransactions();
+  }, [userData]);
+
+  const openConfirmation = (pkg: MiningPackage) => {
+    if (!wallet) {
+      setError('Please connect your wallet first');
+      return;
+    }
+
+    if (!userData) {
+      setError("User data is not loaded yet");
+      return;
+    }
+
+    setSelectedPackage(pkg);
+    setShowConfirmation(true);
+    setError(null);
+  };
+
+  const handlePurchase = async () => {
+    if (!selectedPackage || !wallet || !userData) {
+      setShowConfirmation(false);
+      return;
+    }
+    
+    const userId = userData.id.toString();
+    
+    setIsLoading(true);
+    setError(null);
+    setSuccess(false);
+    setShowConfirmation(false);
+  
+    try {
+      // We'll handle the transaction in a try-catch to properly handle errors
+      // This includes wallet-rejected transactions and insufficient balance errors
+      const result = await tonConnectUI.sendTransaction({
+        validUntil: Math.floor(Date.now() / 1000) + 60,
+        network: CHAIN.MAINNET,
+        messages: [{
+          address: WALLET_ADDRESS,
+          amount: BigInt(selectedPackage.priceTON * 1e9).toString()
+        }]
+      });
+  
+      if (result) {
+        try {
+          // Update user's hashrate in the database
+          const userRef = doc(db, 'users', userId);
+          await updateDoc(userRef, {
+            hashrate: selectedPackage.hashRate
+          });
+  
+          // Create shortened boc code
+          const shortBoc = result.boc ? `${result.boc.slice(0, 4)}...${result.boc.slice(-4)}` : 'No Code available';
+  
+          // Create transaction details
+          const transactionDetails: MiningTransaction = {
+            userId: userId,
+            packageId: selectedPackage.id,
+            hashRate: selectedPackage.hashRate,
+            priceTON: selectedPackage.priceTON,
+            amount: selectedPackage.priceTON,
+            date: new Date().toISOString(),
+            boc: shortBoc,
+            validity: selectedPackage.Validity,
+            item: selectedPackage.hashRate
+          };
+  
+          // Save the transaction to Firestore
+          await saveMiningTransaction(userId, transactionDetails);
+  
+          setSuccess(true);
+          setTransactions(prev => [...prev, transactionDetails]);
+        } catch (dbError) {
+          console.error('Database update failed:', dbError);
+          setError('Transaction successful but failed to update hashrate. Please contact support.');
+        }
+      } else {
+        setError('Transaction failed: Invalid result');
+      }
+    } catch (err: any) {
+      console.error('Transaction failed:', err);
+      
+      // Improved error handling to catch different types of errors
+      const errorMessage = err?.message || String(err);
+      
+      if (errorMessage.includes('insufficient') || errorMessage.includes('not enough') || 
+          errorMessage.includes('balance') || errorMessage.includes('rejected')) {
+        setError('Transaction failed: Insufficient balance or transaction was rejected. Please check your wallet balance.');
+      } else {
+        setError('Purchase failed. Make sure you have sufficient balance or connect with a different TON wallet.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Optional: show a loading spinner if user data is still loading
   if (userLoading) {
@@ -185,7 +204,7 @@ export default function UpgradePage () {
         {wallet && (
           <div className="bg-white p-4 rounded-lg shadow">
             <p className="text-md font-semibold text-gray-600">
-               Connected: <span className="font-mono text-blue-600">{shortAddress}</span>
+              Connected: <span className="font-mono text-blue-600">{shortAddress}</span>
               <span className="ml-2 text-gray-400">({walletDevice})</span>
             </p>
           </div>
@@ -219,7 +238,7 @@ export default function UpgradePage () {
                   <p className="text-white">Bonus: <span className="text-sm text-green-400">{pkg.bonusPercentage} <span className='text-white/50 text-xs'>({pkg.bonusReturn})</span></span></p>
                 </div>
                 <button
-                  onClick={() => handlePurchase(pkg)}
+                  onClick={() => openConfirmation(pkg)}
                   disabled={isLoading || !wallet}
                   className={`w-full py-2 px-4 rounded-md text-white font-medium
                     ${isLoading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'}
@@ -231,6 +250,44 @@ export default function UpgradePage () {
             </div>
           ))}
         </div>
+
+        {/* Confirmation Modal */}
+        {showConfirmation && selectedPackage && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg p-6 max-w-md w-full">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Confirm Purchase</h3>
+              <div className="space-y-3 mb-6">
+                <p className="text-gray-700">You are about to purchase:</p>
+                <div className="bg-gray-100 p-3 rounded">
+                  <p className="font-medium">Mining Package: {selectedPackage.hashRate} H/s</p>
+                  <p>Price: {selectedPackage.priceTON} TON</p>
+                  <p>Mining Time: {selectedPackage.timeToMine}</p>
+                  <p>Validity: {selectedPackage.Validity}</p>
+                  <p>Bonus: {selectedPackage.bonusPercentage}</p>
+                </div>
+                <div className="bg-yellow-50 p-3 rounded border border-yellow-300">
+                  <p className="text-yellow-700">
+                    <strong>Note:</strong> Please ensure you have at least {selectedPackage.priceTON} TON in your wallet before confirming.
+                  </p>
+                </div>
+              </div>
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setShowConfirmation(false)}
+                  className="flex-1 py-2 px-4 bg-gray-200 hover:bg-gray-300 rounded-md font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handlePurchase}
+                  className="flex-1 py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-medium"
+                >
+                  Confirm Purchase
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <TransactionsList transactions={transactions} />
       </div>

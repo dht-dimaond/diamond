@@ -19,7 +19,7 @@ const MissionsPage = () => {
   });
 
 
-   // Add this validation function
+   
    const hasDiamondInlastname = () => {
     if (!userData?.last_name) return false;
     return userData.last_name.includes('💎');
@@ -35,7 +35,7 @@ const MissionsPage = () => {
         
         if (!userDoc) return;
 
-        // Get referrals using getUserReferrals
+        // Getting referrals using getUserReferrals
         const referrals = await getUserReferrals(userData.id.toString());
 
         const diamondCompleted = hasDiamondInlastname(); // <-- This was missing

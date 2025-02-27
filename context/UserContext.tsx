@@ -50,7 +50,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         let initDataStr = '';
 
         if (process.env.NODE_ENV === 'development') {
-          // Simulate Telegram data for local testing
+          // Simulating Telegram data for local testing
           user = {
             id: 12345,
             first_name: 'Olumide',
@@ -63,7 +63,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           startParam = '67890'; // Simulate a referrer ID
           initDataStr = 'simulated_init_data';
         } else {
-          // Fetch real data from Telegram (for production)
           if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
             const webAppData = window.Telegram.WebApp.initDataUnsafe;
 
@@ -79,10 +78,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           }
         }
 
-        // Save user data to Firebase
+        // Saving user data to Firebase
         await saveUserData(user);
 
-        // Process referral if start_param exists
+        // Processing referral if start_param exists
         if (startParam) {
           try {
             await handleReferral(user.id.toString(), startParam);
