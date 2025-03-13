@@ -50,7 +50,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         let initDataStr = '';
 
         if (process.env.NODE_ENV === 'development') {
-          // Simulating Telegram data for local testing
           user = {
             id: 12345,
             first_name: 'Olumide',
@@ -78,10 +77,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           }
         }
 
-        // Saving user data to Firebase
+
         await saveUserData(user);
 
-        // Processing referral if start_param exists
         if (startParam) {
           try {
             await handleReferral(user.id.toString(), startParam);
@@ -93,7 +91,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           }
         }
 
-        // Set user data in context
+
         setUserData(user);
         setStartParam(startParam);
         setInitData(initDataStr);

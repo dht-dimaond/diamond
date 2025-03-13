@@ -73,7 +73,7 @@ export default function UpgradePage() {
   const walletDevice = wallet?.device.appName ?? 'No wallet connected';
   const shortAddress = address ? `${address.slice(0, 4)}...${address.slice(-4)}` : 'Connect wallet';
 
-  // Load transactions on mount or when userData changes
+  
   useEffect(() => {
     if (!userData) return;
     
@@ -133,16 +133,16 @@ export default function UpgradePage() {
   
       if (result) {
         try {
-          // Update user's hashrate in the database
+          
           const userRef = doc(db, 'users', userId);
           await updateDoc(userRef, {
             hashrate: selectedPackage.hashRate
           });
   
-          // Create shortened boc code
+          
           const shortBoc = result.boc ? `${result.boc.slice(0, 4)}...${result.boc.slice(-4)}` : 'No Code available';
   
-          // Create transaction details
+          
           const transactionDetails: MiningTransaction = {
             userId: userId,
             packageId: selectedPackage.id,
@@ -155,7 +155,7 @@ export default function UpgradePage() {
             item: selectedPackage.hashRate
           };
   
-          // Save the transaction to Firestore
+         
           await saveMiningTransaction(userId, transactionDetails);
   
           setSuccess(true);
@@ -170,7 +170,7 @@ export default function UpgradePage() {
     } catch (err: any) {
       console.error('Transaction failed:', err);
       
-      // Improved error handling to catch different types of errors
+     
       const errorMessage = err?.message || String(err);
       
       if (errorMessage.includes('insufficient') || errorMessage.includes('not enough') || 
@@ -184,7 +184,6 @@ export default function UpgradePage() {
     }
   };
 
-  // Optional: show a loading spinner if user data is still loading
   if (userLoading) {
     return <div className="min-h-screen flex justify-center items-center">Loading user data...</div>;
   }
@@ -241,6 +240,9 @@ export default function UpgradePage() {
                   onClick={() => openConfirmation(pkg)}
                   disabled={isLoading || !wallet}
                   className={`w-full py-2 px-4 rounded-md text-white font-medium
+              
+              
+              
                     ${isLoading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'}
                     ${!wallet ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                 >

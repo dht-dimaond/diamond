@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 interface TimedAdProps {
   children?: React.ReactNode
-  duration?: number // in milliseconds
+  duration?: number 
 }
 
 const TimedAd = ({ children, duration = 10000 }: TimedAdProps) => {

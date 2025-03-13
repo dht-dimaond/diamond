@@ -3,23 +3,23 @@
 import { useState, useEffect } from 'react';
 import ProfileCard from '../components/ProfileCard';
 import { useUser } from '@/context/UserContext';
-import { getUserData } from '@/lib/users'; // Adjust the import path
+import { getUserData } from '@/lib/users'; 
 
 const ProfilePage = () => {
   const { userData } = useUser()
   const [isAmbassador, setIsAmbassador] = useState(false);
 
-  // Fetch user data from Firestore when userData is available
+  
       useEffect(() => {
         const fetchUserData = async () => {
           try {
-            // Get userId from UserContext
+            
             if (!userData?.id) {
               console.error('User ID is missing');
               return;
             }
     
-            const userId = userData.id.toString(); // Ensure userId is a string
+            const userId = userData.id.toString(); 
             const userFirestoreData = await getUserData(userId);
     
             if (userFirestoreData) {
@@ -31,8 +31,7 @@ const ProfilePage = () => {
         };
     
         fetchUserData();
-      }, [userData]); // Add userData as a dependency
-  
+      }, [userData]); 
   return ( 
     <div className='p-6'>
         {isAmbassador && (

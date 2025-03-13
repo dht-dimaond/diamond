@@ -18,7 +18,7 @@ interface MiningState {
 }
 
 interface MiningConfig {
-  userId: string; // Add userId to fetch user-specific data
+  userId: string; 
   initialBalance?: number;
   initialHashRate?: number;
 }
@@ -54,7 +54,6 @@ export const useMiningLogic = ({
     fetchUserData();
   }, [userId, initialBalance, initialHashRate]);
 
-  // Check for offline mining progress on mount
   useEffect(() => {
     const savedProgress = localStorage.getItem('miningProgress');
     if (savedProgress) {
@@ -69,7 +68,6 @@ export const useMiningLogic = ({
     }
   }, []);
 
-  // Mining rate is dynamic based on hashRate
   const getMiningRate = useCallback((): number => {
     return 0.00278 * hashRate;
   }, [hashRate]);
@@ -98,7 +96,7 @@ export const useMiningLogic = ({
   const upgradeHashRate = useCallback((amount: number): void => {
     setHashRate(prev => {
       const newRate = prev + amount;
-      // Update saved progress with new hash rate if mining
+
       if (isMining) {
         localStorage.setItem('miningProgress', JSON.stringify({
           timestamp: Date.now(),
@@ -122,7 +120,7 @@ export const useMiningLogic = ({
             alert('Congratulations! You have mined $100 DHT tokens. To continue mining, claim your DHT.');
             return MAX_MINABLE_AMOUNT;
           }
-          // Update progress in localStorage
+          
           localStorage.setItem('miningProgress', JSON.stringify({
             timestamp: Date.now(),
             amount: newAmount,

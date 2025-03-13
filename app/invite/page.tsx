@@ -1,5 +1,5 @@
 'use client'
-import { useUser } from '@/context/UserContext' // adjust path as needed
+import { useUser } from '@/context/UserContext' 
 import ReferralSystem from '../components/ReferralSystem'
 
 export default function Home() {

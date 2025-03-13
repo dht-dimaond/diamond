@@ -13,8 +13,7 @@ const AnimatedCoins: React.FC<AnimatedCoinsProps> = ({ isMining }) => {
   return (
     <div className="relative w-full aspect-square mb-6 flex justify-center items-center">
    
-    {/* Background coins that only show when mining */}
-    {/* Main coin */}
+    
     <img
       src="/coin.png"
       alt="DHT Token"

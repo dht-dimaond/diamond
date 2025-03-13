@@ -17,26 +17,24 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
       </head>
       <body className="antialiased min-h-screen">
-        {/* Background Image */}
+        
         <div
           className="fixed inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/background.png')", zIndex: -2 }}
         ></div>
 
-        {/* StarField (Dynamic Background) */}
+        
         <div className="fixed inset-0 z-[-1]">
           <StarField />
         </div>
 
-        {/* Main Content */}
+        
         <TonConnectUIProvider manifestUrl="https://moccasin-implicit-eel-888.mypinata.cloud/ipfs/bafkreifrznbmai6mnl3lse3lw5evmcll6ekh2vyjpfozewuxbj2f677mva">
           <UserProvider>
             <div className="flex flex-col min-h-screen">
-              {/* Ticker */}
               <Ticker />
               <Bar />
 
-              {/* Main Content */}
               <div className="flex-grow overflow-y-auto pb-20 relative z-10">
                 <MiningProvider>
                  {children}
@@ -44,7 +42,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 </MiningProvider>
               </div>
 
-              {/* Fixed Navbar */}
               <ClientNav />
             </div>
           </UserProvider>

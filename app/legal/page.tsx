@@ -15,7 +15,7 @@ const LegalNotice = () => {
         ? 'bg-gray-900 text-white' 
         : 'bg-gray-50 text-gray-900'
     }`}>
-      {/* Dark Mode Toggle Button */}
+
       <button
         onClick={toggleDarkMode}
         className={`fixed top-24 right-4 p-3 rounded-full 
@@ -41,12 +41,11 @@ const LegalNotice = () => {
             : 'bg-white text-black'
           } transition-colors duration-200`}>
           <div className="space-y-6">
-            {/* Header */}
+
             <h1 className="text-2xl md:text-3xl font-bold text-center mb-8">
               NOTICE OF LEGAL COMPLIANCE AND RISK DISCLOSURE FOR THE DIAMOND HEIST PROJECT
             </h1>
 
-            {/* Introduction */}
             <p className={isDarkMode ? 'text-gray-300' : 'text-gray-800'}>
               To all users and participants of The Diamond Heist project, a cryptocurrency mining platform operating as a Telegram mini app,
             </p>
@@ -59,7 +58,6 @@ const LegalNotice = () => {
               The Diamond Heist project offers users various opportunities to earn $DHT tokens through participation in activities within the platform. The project prioritizes transparency and community engagement, fostering a trustworthy and inclusive ecosystem for all participants.
             </p>
 
-            {/* Acknowledgment Section */}
             <div className="space-y-4">
               <p className="font-semibold">
                 BY PARTICIPATING IN THE DIAMOND HEIST PROJECT, YOU ACKNOWLEDGE THAT YOU ARE AWARE OF THE FOLLOWING:
@@ -76,7 +74,6 @@ const LegalNotice = () => {
               </ol>
             </div>
 
-            {/* Agreement Section */}
             <p className="font-semibold">
               BY USING THE DIAMOND HEIST PROJECT, YOU CONFIRM THAT YOU HAVE READ, UNDERSTAND, AND AGREE TO THESE TERMS AND CONDITIONS. YOU ALSO ACKNOWLEDGE THAT YOU ARE AWARE OF THE POTENTIAL RISKS ASSOCIATED WITH CRYPTOCURRENCY INVESTMENTS AND PARTICIPATE AT YOUR OWN RISK.
             </p>
@@ -85,7 +82,6 @@ const LegalNotice = () => {
               The Diamond Heist project encourages responsible participation and adherence to all applicable laws and regulations. If you have any questions or concerns regarding the project or its compliance with regulatory requirements, please do not hesitate to reach out to our support team.
             </p>
 
-            {/* Closing */}
             <div className="space-y-2 pt-4">
               <p className={isDarkMode ? 'text-gray-300' : 'text-gray-800'}>Thank you for your participation in The Diamond Heist project.</p>
               <p className={isDarkMode ? 'text-gray-300' : 'text-gray-800'}>Sincerely,</p>

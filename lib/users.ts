@@ -7,7 +7,7 @@ export const saveUserData = async (telegramData: TelegramUser): Promise<void> =>
   try {
     const userRef = doc(db, 'users', telegramData.id.toString());
 
-    // Check if the user exists
+   
     const userDoc = await getDoc(userRef);
     if (!userDoc.exists()) {
       const userData: UserData = {
@@ -18,18 +18,18 @@ export const saveUserData = async (telegramData: TelegramUser): Promise<void> =>
         isPremium: telegramData.is_premium || false,
         hashrate: 20,
         balance: 0,
-        createdAt: new Date().toISOString(), // Use server timestamp on creation
+        createdAt: new Date().toISOString(), 
         twitterComplete: false,
         twitterRewardClaimed: false,
         telegramComplete: false,
         telegramRewardClaimed: false,
         referralRewardClaimed: false,
-        referrals: [],      // Array to store referred users
-        referrer: null ,     // To store the ID of user who referred them
+        referrals: [],  
+        referrer: null ,    
         isAmbassador: false,
         grandPrizeRewardClaimed: false,
-        diamondlastnameComplete: false,  // Add this
-        diamondlastnameRewardClaimed: false,  // Add this
+        diamondlastnameComplete: false,  
+        diamondlastnameRewardClaimed: false,  
       };
 
       await setDoc(userRef, userData);
@@ -41,7 +41,6 @@ export const saveUserData = async (telegramData: TelegramUser): Promise<void> =>
 };
 
 
-// If you need to update all existing users with new fields
 export const updateAllUsers = async (): Promise<void> => {
   try {
     const usersRef = collection(db, 'users');
@@ -49,9 +48,9 @@ export const updateAllUsers = async (): Promise<void> => {
 
     const batch = writeBatch(db);
     const defaultNewFields = {
-      // Add your new fields here with default values
-        diamondlastnameComplete: false,  // Add this
-        diamondlastnameRewardClaimed: false,  // Add this
+
+        diamondlastnameComplete: false,  
+        diamondlastnameRewardClaimed: false,  
     };
 
     querySnapshot.forEach((document) => {
@@ -94,7 +93,6 @@ export const getUserData = async (userId: string): Promise<UserData | null> => {
   }
 };
 
-// New function to complete social mission
 export const completeSocialMission = async (
   userId: string, 
   platform: 'twitter' | 'telegram' | 'diamondlastname'
@@ -107,7 +105,7 @@ export const completeSocialMission = async (
       throw new Error('User not found');
     }
 
-    // Update the completion status
+
     await updateDoc(userRef, {
       [`${platform}Complete`]: true
     });
@@ -117,7 +115,6 @@ export const completeSocialMission = async (
   }
 };
 
-// New function to claim mission reward
 export const claimMissionReward = async (
   userId: string,
   missionType: 'twitter' | 'telegram' | 'referral' | 'grandPrize' | 'diamondlastname',
@@ -134,13 +131,11 @@ export const claimMissionReward = async (
 
     const userData = userDoc.data() as UserData;
 
-    // Prepare update data
     const updateData: any = {
       balance: userData.balance + rewardAmount,
       [`${missionType}RewardClaimed`]: true
     };
 
-     // Merge in any additional updates if provided
      if (additionalUpdates) {
       Object.assign(updateData, additionalUpdates);
     }
@@ -157,7 +152,6 @@ export const saveMiningTransaction = async (
   transaction: MiningTransaction
 ): Promise<void> => {
   try {
-    // Using a subcollection under the user document
     const transactionsRef = collection(db, 'users', userId, 'transactions');
     await addDoc(transactionsRef, transaction);
     console.log('Transaction saved successfully');
@@ -182,19 +176,16 @@ export const fetchUserTransactions = async (userId: string): Promise<MiningTrans
   }
 };
 
-
-// Add these functions to your Firebase lib file
 export const handleReferral = async (userId: string, referrerId: string): Promise<void> => {
   try {
     const userRef = doc(db, 'users', userId);
     const referrerRef = doc(db, 'users', referrerId);
     
-    // Check if user exists and hasn't been referred yet
     const userDoc = await getDoc(userRef);
 
 
    if (!userDoc.exists()) {
-      // Create complete default user data
+      
       const userData: UserData = {
         telegramId: parseInt(userId),
         username: '',
@@ -219,10 +210,8 @@ export const handleReferral = async (userId: string, referrerId: string): Promis
       
       await setDoc(userRef, userData);
     } else if (userDoc.data().referrer) {
-      // User already has a referrer
       return;
     }
-    // Check if referrer exists
     const referrerDoc = await getDoc(referrerRef);
     if (!referrerDoc.exists()) {
       throw new Error('Referrer not found');
@@ -232,12 +221,10 @@ export const handleReferral = async (userId: string, referrerId: string): Promis
       throw new Error('Cannot refer yourself');
     }
 
-    // Update user with referrer
     await updateDoc(userRef, {
       referrer: referrerId
     });
 
-    // Update referrer's referrals array
     await updateDoc(referrerRef, {
       referrals: arrayUnion(userId)
     });
@@ -247,7 +234,6 @@ export const handleReferral = async (userId: string, referrerId: string): Promis
   }
 };
 
-// Get user's referrals
 export const getUserReferrals = async (userId: string): Promise<string[]> => {
   try {
     const userData = await getUserData(userId);
@@ -258,7 +244,6 @@ export const getUserReferrals = async (userId: string): Promise<string[]> => {
   }
 };
 
-// Add to your existing users file
 export const getReferrerData = async (userId: string): Promise<UserData | null> => {
   try {
     const userData = await getUserData(userId);

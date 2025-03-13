@@ -9,7 +9,6 @@ export default function ClientNav() {
 
   return (
     <div className="fixed bottom-0 w-full z-50">
-      {/* User Icon with curved background */}
       <div className="relative w-full flex justify-center" style={{ marginBottom: "-20px" }}>
         <div className="absolute bottom-0 w-16 h-8 bg-white/5 backdrop-blur-sm" 
              style={{ 
@@ -33,7 +32,6 @@ export default function ClientNav() {
         </div>
       </div>
 
-      {/* Navigation Bar */}
       <nav className="w-full rounded-t-lg backdrop-blur-sm bg-white/5 shadow-lg border-t border-white z-10">
         <div className="max-w-lg mx-auto flex justify-around text-white items-center h-16">
           <Link

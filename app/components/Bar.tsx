@@ -8,15 +8,15 @@ import Link from 'next/link';
 export default function Bar() {
   return (
     <div className="w-full flex items-center justify-between px-6 py-2 border-2 border-b-gray-700 border-t-0 border-r-0 border-l-0 bg-gradient-to-b from-gray-900/20 to-black/50">
-      {/* Center: DHT Balance */}
+     
       
       <div className="flex flex-row items-center">
         <Image
           src="/logo-coin.png"
           alt="DHT"
-          width={40} // Required: Matches w-13 (13 * 4 = 52)
-          height={10} // Required: Matches h-10 (10 * 4 = 40)
-          className="w-13 h-10" // Optional: Additional styling
+          width={40} 
+          height={10} 
+          className="w-13 h-10" 
         />
          <div className="relative flex-col justify-start">
          <span className="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-yellow-500 bg-clip-text text-transparent animate-pulse">
@@ -28,7 +28,6 @@ export default function Bar() {
         </div>
         </div>
     
-      {/* Right: Withdraw Button */}
       <div className='border border-blue-600 text-blue-400 px-4 py-1 text-sm rounded-xl shadow-md hover:bg-blue-800 transition duration-200 ease-in-out'>
         <Link href='/faq'>
           <QuestionMarkCircleIcon className="w-5 h-5" />

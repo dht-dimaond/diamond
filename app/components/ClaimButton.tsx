@@ -25,13 +25,12 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
   const [coins, setCoins] = useState<Coin[]>([]);
 
   const createCoin = () => {
-    // Generate random x position across the full viewport width
     const startX = Math.random() * window.innerWidth;
     return {
       id: Math.random(),
       x: startX,
-      y: window.innerHeight + 50, // Start below viewport
-      speed: 5 + Math.random() * 3, // Increased speed
+      y: window.innerHeight + 50, 
+      speed: 5 + Math.random() * 3, 
       rotation: Math.random() * 360,
       scale: 0.5 + Math.random() * 0.5
     };
@@ -40,15 +39,12 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
   const handleClick = async () => {
     if (disabled) return;
 
-    // Create more coins for a more dramatic effect
     const newCoins = Array(20).fill(null).map(() => createCoin());
     setCoins(newCoins);
 
-    // Execute claim
     await onClick();
   };
 
-  // Animation loop using useEffect
   useEffect(() => {
     if (coins.length === 0) return;
 
@@ -60,9 +56,9 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
             y: coin.y - coin.speed,
             rotation: coin.rotation + 2
           }))
-          .filter(coin => coin.y > -100); // Keep coins until they're well off screen
+          .filter(coin => coin.y > -100); 
 
-        // If no coins left, clear the interval
+       
         if (updatedCoins.length === 0) {
           clearInterval(animationFrame);
         }
@@ -71,13 +67,13 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
       });
     }, 16);
 
-    // Cleanup
+  
     return () => clearInterval(animationFrame);
   }, [coins]);
 
   return (
     <>
-      {/* Fixed position coin container that covers the whole viewport */}
+      
       {coins.length > 0 && (
         <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 9999 }}>
           {coins.map(coin => (
@@ -93,14 +89,13 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
               <img
                 src="/coin.png"
                 alt="coin"
-                className="w-8 h-6" // Made coins slightly larger
+                className="w-8 h-6" 
               />
             </div>
           ))}
         </div>
       )}
 
-      {/* Original button */}
       <button
         onClick={handleClick}
         disabled={disabled}

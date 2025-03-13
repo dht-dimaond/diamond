@@ -3,7 +3,7 @@
 import DHTBalanceCard from '../components/DHTBalanceCard';
 import { useState, useEffect } from 'react';
 import { useUser } from '@/context/UserContext'
-import { getUserData } from '@/lib/users'; // Adjust the import path
+import { getUserData } from '@/lib/users'; 
 import TransactionsList from '../components/Transactions';
 import { fetchUserTransactions } from '@/lib/users';
 
@@ -12,17 +12,17 @@ export default function Home() {
   const [balance,setBalance] =useState<number>();
   const [transactions, setTransactions] = useState<any[]>([]);
 
-    // Fetch user data from Firestore when userData is available
+   
     useEffect(() => {
       const fetchUserData = async () => {
         try {
-          // Get userId from UserContext
+         
           if (!userData?.id) {
             console.error('User ID is missing');
             return;
           }
   
-          const userId = userData.id.toString(); // Ensure userId is a string
+          const userId = userData.id.toString(); 
           const userFirestoreData = await getUserData(userId);
   
           if (userFirestoreData) {
@@ -34,14 +34,14 @@ export default function Home() {
       };
   
       fetchUserData();
-    }, [userData]); // Add userData as a dependency
+    }, [userData]); 
 
     useEffect(() => {
           if (!userData) return;
           
           const loadTransactions = async () => {
             try {
-              // Use the Telegram user ID (converted to string) as your user identifier
+
               const userId = userData.id.toString();
               const userTransactions = await fetchUserTransactions(userId);
               setTransactions(userTransactions);

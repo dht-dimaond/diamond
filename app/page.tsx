@@ -7,8 +7,8 @@ import ClaimButton from './components/ClaimButton';
 import DHTBalanceCard from './components/DHTBalanceCard';
 import AnimatedCoins from './components/AnimatedCoins';
 import TokenDetails from './components/TokenDetails';
-import { useUser } from '@/context/UserContext'; // Adjust the import path
-import { getUserData } from '@/lib/users'; // Adjust the import path
+import { useUser } from '@/context/UserContext'; 
+import { getUserData } from '@/lib/users'; 
 import { useMining } from '@/context/MiningContext';
 import Image from 'next/image';
 import Tokenomics from './components/Tokennomics';
@@ -16,21 +16,19 @@ import PriceComponent from './components/PriceComponent';
 
 
 const HomePage = () => {
-  const { userData, isLoading } = useUser(); // Get user data from context
-  const [initialBalance, setInitialBalance] = useState<number>(); // Add state for initialBalance
-  const [initialHashRate, setInitialHashRate] = useState<number>(); // Add state for initialHashRate
+  const { userData, isLoading } = useUser(); 
+  const [initialBalance, setInitialBalance] = useState<number>(); 
+  const [initialHashRate, setInitialHashRate] = useState<number>(); 
 
-  // Fetch user data from Firestore when userData is available
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Get userId from UserContext
         if (!userData?.id) {
           console.error('User ID is missing');
           return;
         }
 
-        const userId = userData.id.toString(); // Ensure userId is a string
+        const userId = userData.id.toString(); 
         const userFirestoreData = await getUserData(userId);
 
         if (userFirestoreData) {
@@ -43,7 +41,7 @@ const HomePage = () => {
     };
 
     fetchUserData();
-  }, [userData]); // Add userData as a dependency
+  }, [userData]); 
 
   const {
     balance,
@@ -56,7 +54,7 @@ const HomePage = () => {
   } = useMining();
 
   if (isLoading) {
-    return <div>Loading...</div>; // Show loading state while fetching user data
+    return <div>Loading...</div>; 
   }
 
   if (!userData?.id) {

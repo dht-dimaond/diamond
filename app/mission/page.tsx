@@ -35,10 +35,9 @@ const MissionsPage = () => {
         
         if (!userDoc) return;
 
-        // Getting referrals using getUserReferrals
         const referrals = await getUserReferrals(userData.id.toString());
 
-        const diamondCompleted = hasDiamondInlastname(); // <-- This was missing
+        const diamondCompleted = hasDiamondInlastname();
         
         setMissions(prev =>({
           ...prev,
@@ -59,7 +58,6 @@ const MissionsPage = () => {
           }
         }));
 
-        // Sync with Firebase if needed
         if (diamondCompleted && !userDoc.diamondlastnameComplete) {
           await completeSocialMission(userData.id.toString(), 'diamondlastname');
         }
@@ -67,7 +65,6 @@ const MissionsPage = () => {
         
         setReferralCount(referrals.length);
         
-        // Set ambassador status and grand prize claim status
         setIsAmbassador(userDoc.isAmbassador || false);
         setGrandPrizeRewardClaimed(userDoc.grandPrizeRewardClaimed || false);
       } catch (error) {
@@ -127,10 +124,10 @@ const MissionsPage = () => {
     if (!userData?.id || referralCount < 10 || grandPrizeRewardClaimed) return;
     
     try {
-      // Using existing claimMissionReward function with a special type
+
       await claimMissionReward(userData.id.toString(), 'grandPrize', 1000, { isAmbassador: true });
       
-      // Update local state
+    
       setIsAmbassador(true);
       setGrandPrizeRewardClaimed(true);
       
@@ -152,7 +149,6 @@ const MissionsPage = () => {
   return (
     <div className="min-h-screen p-2">
       <div className="max-w-3xl mx-auto space-y-8">
-        {/* Grand Prize Section */}
         <div className="relative overflow-hidden rounded-2xl p-4 bg-gradient-to-br from-amber-900/30 to-amber-800/10 border border-amber-800/50">
           <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10" />
           <div className="relative z-10 text-center">
@@ -184,7 +180,6 @@ const MissionsPage = () => {
           </div>
         </div>
         
-        {/* Ambassador Badge - only shown when isAmbassador is true */}
         {isAmbassador && (
           <div className="relative overflow-hidden rounded-2xl p-4 bg-gradient-to-br from-amber-700/30 to-amber-600/10 border border-amber-600/50">
             <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10" />
@@ -204,9 +199,8 @@ const MissionsPage = () => {
           </div>
         )}
 
-        {/* Missions Grid */}
         <div className="gap-6 flex flex-col border-2 border-gray-700 rounded-xl p-4 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
-          {/* Referral Mission Card */}
+          {/* Referral Missions*/}
           <div className=" rounded-xl p-6 border border-gray-700/50 bg-gradient-to-b from-gray-800 via-gray-800 to-gray-1000 rounded-lg backdrop-blur-md shadow-md w-full max-w-full">
             <div className="flex flex-col w-full max-w-full gap-4">
               <div className="flex items-center justify-between">
@@ -247,7 +241,7 @@ const MissionsPage = () => {
             </div>
           </div>
 
-          {/* Social Mission Cards */}
+          {/* Social Missions */}
           {[
             { type: 'telegram' as const, url: 'https://t.me/+PMWu-iBnsGg2NDM0', label: 'Join Telegram Channel' },
             { type: 'twitter' as const, url: 'https://x.com/diamondhiest?s=11', label: 'Follow us on X' }

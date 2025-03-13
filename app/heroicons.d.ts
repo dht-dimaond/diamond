@@ -8,6 +8,6 @@ declare module '@heroicons/react' {
     export const BriefcaseIcon: FC<SVGProps<SVGSVGElement>>;
     export const UserIcon: FC<SVGProps<SVGSVGElement>>;
     export const QuestionMarkCircleIcon: FC<SVGProps<SVGSVGElement>>;
-    // Add more icons as needed
+    
   }
   

@@ -31,8 +31,6 @@ body {
 
 .animate-scroll {
   animation: scroll 30s linear infinite;
-  display: inline-flex; /* Ensures proper inline scrolling behavior */
-  width: max-content; /* Ensure the content's width adjusts to fit */
 }
 
 @keyframes float {
@@ -49,7 +47,6 @@ body {
 }
 
 
-/* Keyframes for the spinning animation */
 @keyframes spin-slow {
   0% {
     transform: rotate(0deg);
@@ -59,9 +56,8 @@ body {
   }
 }
 
-/* Apply the animation to the spinner */
 .animate-spin-slow {
-  animation: spin-slow 3s linear infinite; /* Adjust the duration for faster/slower spinning */
+  animation: spin-slow 3s linear infinite;
 }
 
 @keyframes spin-counter {
@@ -73,9 +69,8 @@ body {
   }
 }
 
-/* Apply the animation to the spinner */
 .animate-spin-counter {
-  animation: spin-counter 3s linear infinite; /* Adjust the duration for faster/slower spinning */
+  animation: spin-counter 3s linear infinite; 
 }
 
 @keyframes simple-bounce {

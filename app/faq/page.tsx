@@ -50,7 +50,7 @@ const About = () => {
         </p>
       </div>
 
-      {/* How to Earn Section */}
+      
       <div className="space-y-4">
         <h2 className="text-xl font-bold text-green-400 flex items-center space-x-2">
           <Award className="w-6 h-6" />
@@ -77,7 +77,6 @@ const About = () => {
         </div>
       </div>
 
-      {/* Future & Early Bird Section */}
       <div className="grid gap-6 md:grid-cols-2">
         <div className="rounded-lg bg-purple-500/10 p-6 backdrop-blur-sm border border-purple-500/20">
           <div className="flex items-center space-x-2 mb-3">
@@ -90,7 +89,6 @@ const About = () => {
         </div>
       </div>
 
-      {/* Call to Action */}
       <div className="text-center bg-gradient-to-r from-indigo-500/20 to-blue-500/20 rounded-lg p-8 backdrop-blur-xl border border-white/10">
         <p className="text-xl text-indigo-300 mb-4">
           Do not wait—join the Diamond Heist revolution today!
