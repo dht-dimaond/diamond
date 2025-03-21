@@ -73,10 +73,6 @@ const StreakDisplay: React.FC<StreakDisplayProps> = ({ telegramId, onMilestoneRe
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
-
-  if (loading) {
-    return <div className="flex items-center justify-center p-2 text-gray-300">Loading Streak...</div>;
-  }
   
   // Calculate progress to next milestone
   const calculateProgress = () => {
