@@ -13,12 +13,14 @@ import { useMining } from '@/context/MiningContext';
 import Image from 'next/image';
 import Tokenomics from './components/Tokennomics';
 import PriceComponent from './components/PriceComponent';
-
+import DHWalletAd from './components/DHWalletAd';
+import StreakDisplay from './components/StreakDisplay';
 
 const HomePage = () => {
   const { userData, isLoading } = useUser(); 
   const [initialBalance, setInitialBalance] = useState<number>(); 
   const [initialHashRate, setInitialHashRate] = useState<number>(); 
+  const [showAd, setShowAd] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -41,6 +43,13 @@ const HomePage = () => {
     };
 
     fetchUserData();
+
+    const timer = setTimeout(() => {
+      setShowAd(true);
+    }, 2000);
+    
+    return () => clearTimeout(timer);
+
   }, [userData]); 
 
   const {
@@ -58,11 +67,18 @@ const HomePage = () => {
   }
 
   if (!userData?.id) {
-    return <div>Error: User ID is missing. Please log in again.</div> // Handle missing userId
-  }
+    return <div>Error: User ID is missing. Please log in again.</div> 
+  } 
 
   return (
     <div className="min-h-screen p-2 w-screen max-w-full overflow-x-hidden">
+      {showAd && <DHWalletAd setShowAd={setShowAd} />}
+      <StreakDisplay 
+          telegramId={userData.id.toString()} 
+          onMilestoneReached={(reward) => {
+            console.log(`User reached milestone and earned ${reward} tokens!`);
+          }}
+        />
       <div className="max-w-l mx-auto">
       <div className="flex flex-col gap-4 mt-2 border-2 border-gray-700 rounded-xl p-4 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
         <DHTBalanceCard balance={balance} imageSrc="/coin.png" />

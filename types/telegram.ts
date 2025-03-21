@@ -28,6 +28,14 @@ export interface TelegramUser {
     grandPrizeRewardClaimed: boolean;
     diamondlastnameComplete: boolean;
     diamondlastnameRewardClaimed: boolean;
+
+    streak?: {
+      currentStreak: number;
+      highestStreak: number;
+      lastLoginDate: string;
+      startDate: string;
+    };
+    claimedMilestones?: number[];
     
   }
   

@@ -7,7 +7,6 @@ export const saveUserData = async (telegramData: TelegramUser): Promise<void> =>
   try {
     const userRef = doc(db, 'users', telegramData.id.toString());
 
-   
     const userDoc = await getDoc(userRef);
     if (!userDoc.exists()) {
       const userData: UserData = {
@@ -267,5 +266,153 @@ export const getReferralsWithDetails = async (userId: string): Promise<UserData[
   } catch (error) {
     console.error('Error getting referrals with details:', error);
     return [];
+  }
+};
+
+
+
+
+//..........................................................................................................................
+//streak
+interface StreakData {
+  currentStreak: number;
+  highestStreak: number;
+  lastLoginDate: string;
+  startDate: string;
+}
+
+// Update user streak based on telegram ID
+export const updateUserStreak = async (telegramId: string): Promise<StreakData | null> => {
+  try {
+    const userRef = doc(db, 'users', telegramId);
+    const userDoc = await getDoc(userRef);
+    
+    if (!userDoc.exists()) {
+      console.error('User not found in the database');
+      return null;
+    }
+    
+    const userData = userDoc.data();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalize to start of day
+    const todayStr = today.toISOString().split('T')[0];
+    
+    // Check if user has streak data
+    let streakData: StreakData;
+    
+    if (!userData.streak) {
+      // First time user is logging in for streak tracking
+      streakData = {
+        currentStreak: 1,
+        highestStreak: 1,
+        lastLoginDate: todayStr,
+        startDate: todayStr
+      };
+    } else {
+      streakData = userData.streak;
+      const lastLoginDate = new Date(streakData.lastLoginDate);
+      lastLoginDate.setHours(0, 0, 0, 0);
+      
+      // Calculate difference in days
+      const daysDifference = Math.floor((today.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24));
+      
+      if (daysDifference === 0) {
+        // Already logged in today, no streak update needed
+        return streakData;
+      } else if (daysDifference === 1) {
+        // Consecutive day, increase streak
+        streakData.currentStreak += 1;
+        streakData.highestStreak = Math.max(streakData.currentStreak, streakData.highestStreak);
+      } else {
+        // Streak broken, reset to 1
+        streakData.currentStreak = 1;
+      }
+      
+      // Update last login date
+      streakData.lastLoginDate = todayStr;
+    }
+    
+    // Update streak data in user document
+    await updateDoc(userRef, { streak: streakData });
+    return streakData;
+  } catch (error) {
+    console.error('Error updating streak:', error);
+    return null;
+  }
+};
+
+// Get user's current streak
+export const getUserStreak = async (telegramId: string): Promise<StreakData | null> => {
+  try {
+    const userRef = doc(db, 'users', telegramId);
+    const userDoc = await getDoc(userRef);
+    
+    if (!userDoc.exists()) {
+      console.error('User not found in the database');
+      return null;
+    }
+    
+    const userData = userDoc.data();
+    
+    if (!userData.streak) {
+      const defaultStreak: StreakData = {
+        currentStreak: 0,
+        highestStreak: 0,
+        lastLoginDate: '',
+        startDate: ''
+      };
+      return defaultStreak;
+    }
+    
+    return userData.streak as StreakData;
+  } catch (error) {
+    console.error('Error getting streak:', error);
+    return null;
+  }
+};
+
+// Function to check if a user should be rewarded for reaching a streak milestone
+export const checkStreakMilestones = async (telegramId: string): Promise<number | null | undefined> => {
+  try {
+    const streakData = await getUserStreak(telegramId);
+    if (!streakData) return null;
+    
+    // Define milestone rewards (streak day -> reward amount)
+    const milestones: Record<number, number> = {
+      7: 50,   // 7 days streak = 50 tokens
+      30: 250, // 30 days streak = 250 tokens
+      90: 1000 // 90 days streak = 1000 tokens
+    };
+    
+    // Check if user has hit a milestone
+    const userRef = doc(db, 'users', telegramId);
+    const userDoc = await getDoc(userRef);
+    const userData = userDoc.data();
+    
+    if (userData) {
+      if (!userData.claimedMilestones) {
+        userData.claimedMilestones = [];
+      }
+    
+      for (const [days, reward] of Object.entries(milestones)) {
+        const milestone = parseInt(days);
+        if (streakData.currentStreak >= milestone && 
+            !userData.claimedMilestones.includes(milestone)) {
+          // User has reached a milestone they haven't claimed
+          await updateDoc(userRef, {
+            claimedMilestones: [...userData.claimedMilestones, milestone],
+            balance: userData.balance + reward
+          });
+          
+          return reward;
+        }
+      }
+    } else {
+      console.error('User data not found');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error checking streak milestones:', error);
+    return null;
   }
 };

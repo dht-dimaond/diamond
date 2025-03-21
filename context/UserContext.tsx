@@ -59,7 +59,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             is_premium: true,
             photo_url: 'https://randomuser.me/api/portraits/men/3.jpg',
           };
-          startParam = '67890'; // Simulate a referrer ID
+          startParam = '67890'; 
           initDataStr = 'simulated_init_data';
         } else {
           if (typeof window !== 'undefined' && window.Telegram?.WebApp) {

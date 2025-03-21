@@ -261,11 +261,11 @@ export default function UpgradePage() {
               <div className="space-y-3 mb-6">
                 <p className="text-gray-700">You are about to purchase:</p>
                 <div className="bg-gray-100 p-3 rounded">
-                  <p className="font-medium">Mining Package: {selectedPackage.hashRate} H/s</p>
-                  <p>Price: {selectedPackage.priceTON} TON</p>
-                  <p>Mining Time: {selectedPackage.timeToMine}</p>
-                  <p>Validity: {selectedPackage.Validity}</p>
-                  <p>Bonus: {selectedPackage.bonusPercentage}</p>
+                  <p className="font-medium text-gray-700">Mining Package: {selectedPackage.hashRate} H/s</p>
+                  <p className="text-gray-700">Price: {selectedPackage.priceTON} TON</p>
+                  <p className="text-gray-700">Mining Time: {selectedPackage.timeToMine}</p>
+                  <p className="text-gray-700">Validity: {selectedPackage.Validity}</p>
+                  <p className="text-gray-700">Bonus: {selectedPackage.bonusPercentage}</p>
                 </div>
                 <div className="bg-yellow-50 p-3 rounded border border-yellow-300">
                   <p className="text-yellow-700">
@@ -274,12 +274,6 @@ export default function UpgradePage() {
                 </div>
               </div>
               <div className="flex space-x-3">
-                <button
-                  onClick={() => setShowConfirmation(false)}
-                  className="flex-1 py-2 px-4 bg-gray-200 hover:bg-gray-300 rounded-md font-medium"
-                >
-                  Cancel
-                </button>
                 <button
                   onClick={handlePurchase}
                   className="flex-1 py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-medium"
