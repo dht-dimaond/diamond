@@ -13,6 +13,9 @@ declare global {
           start_param?: string;
           initData: string;
         };
+        HapticFeedback: {
+          notificationOccurred: (type: string) => void;
+        };
       };
     };
   }

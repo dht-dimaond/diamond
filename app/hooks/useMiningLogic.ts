@@ -118,6 +118,23 @@ export const useMiningLogic = ({
             setIsMining(false);
             localStorage.removeItem('miningProgress');
             alert('Congratulations! You have mined $100 DHT tokens. To continue mining, claim your DHT.');
+                 // Telegram native popup
+           (window.Telegram?.WebApp as any).showPopup({
+            title: '🎉 Mining Complete!',
+            message: 'Claim your 100 DHT tokens!',
+            buttons: [
+              { id: 'claim', type: 'default', text: 'Claim DHT' },
+              { type: 'cancel', text: 'Close' }
+            ]
+          }, (buttonId: string) => {
+            if (buttonId === 'claim') {
+              claimDHT();
+            }
+          });
+
+          // Haptic feedback
+          window.Telegram?.WebApp.HapticFeedback.notificationOccurred('success');
+
             return MAX_MINABLE_AMOUNT;
           }
           
