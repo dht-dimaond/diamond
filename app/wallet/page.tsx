@@ -6,6 +6,7 @@ import { useUser } from '@/context/UserContext'
 import { getUserData } from '@/lib/users'; 
 import TransactionsList from '../components/Transactions';
 import { fetchUserTransactions } from '@/lib/users';
+import Wallet from '../components/Wallet';
 
 export default function Home() {
   const { userData } = useUser();
@@ -56,6 +57,7 @@ export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center p-2 rounded-lg shadow-lg max-w-4xl mx-auto">
        <DHTBalanceCard balance={balance ?? 0} imageSrc="/coin.png" />
+       <Wallet />
       <h1 className="text-3xl font-semibold text-gray-200 mt-6 mb-6">Transaction History</h1>
       <TransactionsList transactions={transactions} />
     </div>

@@ -44,11 +44,36 @@ const HomePage = () => {
 
     fetchUserData();
 
+     // lauunching ad
+  const isFirstLaunch = !localStorage.getItem('appLaunched');
+  
+  if (isFirstLaunch) {
+   
     const timer = setTimeout(() => {
       setShowAd(true);
-    }, 2000);
+      
+      localStorage.setItem('appLaunched', 'true');
+     
+      localStorage.setItem('lastAdShown', Date.now().toString());
+    }, 1000);
     
     return () => clearTimeout(timer);
+  } else {
+  
+    const lastAdShown = localStorage.getItem('lastAdShown');
+    const currentTime = Date.now();
+    
+    
+    if (lastAdShown && currentTime - parseInt(lastAdShown) > 60000) {
+      const timer = setTimeout(() => {
+        setShowAd(true);
+        localStorage.setItem('lastAdShown', currentTime.toString());
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+    
+  }
 
   }, [userData]); 
 

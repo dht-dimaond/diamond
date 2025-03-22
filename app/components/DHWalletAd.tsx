@@ -3,7 +3,7 @@ import { ArrowUpRight, X, Wallet, Shield, Zap, Flame, Coins, Calendar, Gift, Che
 
 const DHWalletAd: React.FC<{ setShowAd: (show: boolean) => void }> = ({ setShowAd }) => {
   const [animationState, setAnimationState] = useState(0);
-  const [activeTab, setActiveTab] = useState('main'); // 'main' or 'streaks'
+  const [activeTab, setActiveTab] = useState('main'); 
   
   useEffect(() => {
     const timer = setInterval(() => {
@@ -15,7 +15,7 @@ const DHWalletAd: React.FC<{ setShowAd: (show: boolean) => void }> = ({ setShowA
 
   return (
     <div className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50 backdrop-blur-md animate-in fade-in duration-300 overflow-auto">
-      {/* Container modified to be 3/4 the screen size */}
+      
       <div className="bg-gradient-to-br from-blue-950 to-indigo-950 rounded-2xl shadow-2xl w-full h-3/4 relative border border-indigo-500/50 overflow-auto">
         {/* Close button */}
         <button
