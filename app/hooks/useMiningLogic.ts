@@ -117,8 +117,7 @@ export const useMiningLogic = ({
             cleanupMining();
             setIsMining(false);
             localStorage.removeItem('miningProgress');
-            alert('Congratulations! You have mined $100 DHT tokens. To continue mining, claim your DHT.');
-                 // Telegram native popup
+                 // Telegram popup
            (window.Telegram?.WebApp as any).showPopup({
             title: '🎉 Mining Complete!',
             message: 'Claim your 100 DHT tokens!',
