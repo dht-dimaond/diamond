@@ -5,7 +5,7 @@ const DHTWallet = () => {
   const [animationState, setAnimationState] = useState(0);
   const [isHovering, setIsHovering] = useState<number | null>(null);
 
-  // Automatically cycle through feature card animations
+ 
   useEffect(() => {
     const interval = setInterval(() => {
       setAnimationState((prev) => (prev + 1) % 4);
@@ -45,7 +45,7 @@ const DHTWallet = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-950 to-black text-white overflow-hidden">
+    <div className="min-h-screen bg-transparent text-white overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-32 -right-32 w-64 h-64 bg-blue-500 rounded-full opacity-10 blur-3xl"></div>
@@ -56,8 +56,8 @@ const DHTWallet = () => {
       {/* Content container */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-20">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-16">
-          <div className="flex items-center space-x-4 mb-8 md:mb-0">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
+          <div className="flex items-center space-x-4 mb-4 md:mb-0">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur-sm"></div>
               <div className="h-14 w-14 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center p-0.5 relative">
@@ -73,14 +73,6 @@ const DHTWallet = () => {
                 <span className="inline-block h-2 w-2 bg-cyan-400 rounded-full animate-pulse"></span>
               </div>
             </div>
-          </div>
-          <div className="flex space-x-2">
-            <button className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all text-sm font-medium">
-              Learn More
-            </button>
-            <button className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all text-sm font-medium">
-              Join Waitlist
-            </button>
           </div>
         </div>
 
@@ -116,8 +108,8 @@ const DHTWallet = () => {
               <div className="relative bg-gradient-to-br from-indigo-900/50 to-black/50 border border-white/10 rounded-3xl p-6 backdrop-blur-lg w-full max-w-md">
                 <div className="flex justify-between items-center mb-8">
                   <div>
-                    <div className="text-sm text-blue-300">Current Balance</div>
-                    <div className="text-2xl font-bold">1,250 DHT</div>
+                    <div className="text-sm text-blue-300">Current Market Rate</div>
+                    <div className="text-2xl font-bold">$0.6+</div>
                   </div>
                   <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center text-xs font-bold">
                     DHT
@@ -125,16 +117,16 @@ const DHTWallet = () => {
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 mb-6">
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-blue-200">$DHT to ETH</span>
+                    <span className="text-sm text-blue-200">DHT to ETH </span>
                     <span className="text-sm text-blue-300">0.00042 ETH</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-xs text-blue-400">1 DHT = 0.00042 ETH</span>
+                    <span className="text-xs text-blue-400">1 DHT = 0.9 TON</span>
                     <Zap size={14} className="text-yellow-400" />
                   </div>
                 </div>
-                <button className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
-                  Swap Tokens
+                <button className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-gray-300 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                  Swap tokens (soon)
                 </button>
               </div>
             </div>
@@ -174,28 +166,6 @@ const DHTWallet = () => {
             ))}
           </div>
         </div>
-
-        {/* CTA Section */}
-        <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 rounded-2xl p-8 backdrop-blur-sm border border-white/10 mb-16">
-          <div className="text-center max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold mb-4">Be Among the First</h3>
-            <p className="text-blue-200 mb-8">
-              Join our exclusive waitlist to get early access to DHT Wallet and receive special benefits when we launch.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="px-4 py-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 focus:outline-none focus:border-blue-400 text-white w-full sm:w-auto"
-              />
-              <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all w-full sm:w-auto">
-                Join Waitlist
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
             <div className="flex items-center space-x-3 mb-2">
@@ -208,7 +178,7 @@ const DHTWallet = () => {
             </div>
             <p className="text-blue-300 text-sm">The future of digital finance, today.</p>
           </div>
-          <div className="flex space-x-6">
+          {/* <div className="flex space-x-6">
             <a href="#" className="text-blue-300 hover:text-white transition-colors">
               <Twitter size={20} />
             </a>
@@ -218,7 +188,7 @@ const DHTWallet = () => {
             <a href="#" className="text-blue-300 hover:text-white transition-colors">
               <Bell size={20} />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
