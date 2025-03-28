@@ -1,4 +1,4 @@
-'use client'
+{/*'use client'
 import React, { useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
 
@@ -94,4 +94,4 @@ const LegalNotice = () => {
   );
 };
 
-export default LegalNotice;
+export default LegalNotice; */}
