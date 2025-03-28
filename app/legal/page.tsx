@@ -15,6 +15,7 @@ const LegalNotice = () => {
         ? 'bg-gray-900 text-white' 
         : 'bg-gray-50 text-gray-900'
     }`}>
+      </div>
   );
 };
 
