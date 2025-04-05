@@ -82,6 +82,7 @@ const  VideoMission = () => {
               <div className="flex flex-col gap-3">
                 <a 
                   href={challengeVideoUrl} 
+                  download={true}
                   target='_blank'
                   className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors text-white font-medium"
                 >
