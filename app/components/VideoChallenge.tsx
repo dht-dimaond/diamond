@@ -72,7 +72,7 @@ const  VideoMission = () => {
               <div className="bg-gray-900/50 p-4 rounded-lg border border-gray-700/50">
                 <h4 className="text-amber-400 font-medium mb-2">How to participate:</h4>
                 <ol className="text-gray-300 text-sm space-y-2 list-decimal ml-4">
-                  <li>Download our challenge video</li>
+                  <li>Download our challenge video <span className='text-xs text-gray-600'>( you might have to open link in your browser to download the video)</span></li>
                   <li>Post it on your social media platform</li>
                   <li>Submit the video link below</li>
                   <li>Send your link via Telegram to claim your reward!</li>
