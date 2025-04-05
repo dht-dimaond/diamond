@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { getUserData, updateUserBalance } from '@/lib/users';
 
+
+
 interface MiningState {
   balance: number;
   isMining: boolean;

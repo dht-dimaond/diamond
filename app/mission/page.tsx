@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useUser } from '@/context/UserContext';
 import { getUserData, getUserReferrals, completeSocialMission, claimMissionReward } from '@/lib/users';
 import Link from 'next/link';
+import TikTokChallenge from '../components/VideoChallenge';
 
 const MissionsPage = () => {
   const { userData } = useUser();
@@ -200,6 +201,7 @@ const MissionsPage = () => {
         )}
 
         <div className="gap-6 flex flex-col border-2 border-gray-700 rounded-xl p-4 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
+         <TikTokChallenge />
           {/* Referral Missions*/}
           <div className=" rounded-xl p-6 border border-gray-700/50 bg-gradient-to-b from-gray-800 via-gray-800 to-gray-1000 rounded-lg backdrop-blur-md shadow-md w-full max-w-full">
             <div className="flex flex-col w-full max-w-full gap-4">
