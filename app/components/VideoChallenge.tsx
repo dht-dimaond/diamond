@@ -8,8 +8,8 @@ const  VideoMission = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   
-  const challengeVideoUrl = "https://drive.google.com/uc?export=download&id=1sN6CceMjLCeBtNzkUZMcGLQogs1LljWM";
-  
+  const challengeVideoUrl = "https://dl.dropboxusercontent.com/scl/fi/x4nbwqui79btambzo5zfa/mission-video.mp4?rlkey=wr0jrc57q50nf7va5b0uthqc2&dl=1";
+
   
   const telegramChatLink = "https://t.me/Jagabanthaprince"; 
   
