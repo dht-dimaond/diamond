@@ -15,6 +15,8 @@ const MissionsPage = () => {
   const [missions, setMissions] = useState({
     twitter: { completed: false, claimed: false },
     telegram: { completed: false, claimed: false },
+    youtube: { completed: false, claimed: false },
+    tiktok: { completed: false, claimed: false },
     diamondlastname: { completed: false, claimed: false },
     referral: { claimed: false }
   });
@@ -54,6 +56,14 @@ const MissionsPage = () => {
             completed: userDoc.telegramComplete,
             claimed: userDoc.telegramRewardClaimed
           },
+          youtube: {
+            completed: userDoc.youtubeComplete,
+            claimed: userDoc.youtubeRewardClaimed
+          },
+          tiktok: {
+            completed: userDoc.tiktokComplete,
+            claimed: userDoc.tiktokRewardClaimed
+          },
           referral: {
             claimed: userDoc.referralRewardClaimed
           }
@@ -78,7 +88,7 @@ const MissionsPage = () => {
     loadData();
   }, [userData]);
 
-  const handleSocialMission = async (platform: 'twitter' | 'telegram') => {
+  const handleSocialMission = async (platform: 'twitter' | 'telegram' | 'youtube' | 'tiktok') => {
     if (!userData?.id) return;
 
     try {
@@ -96,12 +106,12 @@ const MissionsPage = () => {
     }
   };
 
-  const handleClaimReward = async (type: 'twitter' | 'telegram' | 'referral' | 'diamondlastname') => {
+  const handleClaimReward = async (type: 'twitter' | 'telegram' | 'referral' | 'diamondlastname' | 'youtube' | 'tiktok') => {
     if (!userData?.id) return;
     
     if (type === 'referral' && referralCount < 5) return;
     
-    if ((type === 'twitter' || type === 'telegram') && !missions[type].completed) return;
+    if ((type === 'twitter' || type === 'telegram' || type === 'youtube' || type === 'tiktok') && !missions[type].completed) return;
     
     try {
       const amount = type === 'diamondlastname' ? 200 : 50; 
@@ -246,7 +256,9 @@ const MissionsPage = () => {
           {/* Social Missions */}
           {[
             { type: 'telegram' as const, url: 'https://t.me/+PMWu-iBnsGg2NDM0', label: 'Join Telegram Channel' },
-            { type: 'twitter' as const, url: 'https://x.com/diamondhiest?s=11', label: 'Follow us on X' }
+            { type: 'twitter' as const, url: 'https://x.com/diamondhiest?s=11', label: 'Follow us on X' },
+            { type: 'youtube' as const, url: 'https://youtube.com/@DiamondHiest1', label: 'Subscribe to our Youtube channel' },
+            { type: 'tiktok' as const, url: 'https://tiktok.com/@diamondhiest?_t=ZMK-8vLDoJEOQzN&_r=1', label: 'Follow us on tiktok' }
           ].map(({ type, url, label }) => (
             <div key={type} className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg py-6 px-4 backdrop-blur-md shadow-md w-full max-w-full">
               <div className="flex flex-col gap-4">
@@ -281,7 +293,7 @@ const MissionsPage = () => {
                           : 'bg-gradient-to-r from-blue-400 to-amber-800 animate-pulse shadow-lg shadow-blue-500/50 animate-pulse'
                       } ease focus:outline-none`}
                     >
-                      {missions[type].completed ? 'Completed' : 'Join Now'}
+                      {missions[type].completed ? 'Completed' : 'Go'}
                     </button>
                     <button
                       onClick={() => handleClaimReward(type)}

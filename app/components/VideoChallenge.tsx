@@ -50,7 +50,7 @@ const  VideoMission = () => {
               </span>
             ) : (
               <span className="px-3 py-1 text-sm rounded-full bg-amber-900/30 text-amber-400">
-                +500 DHT
+                +5000 DHT
               </span>
             )}
           </div>

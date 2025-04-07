@@ -22,6 +22,10 @@ export const saveUserData = async (telegramData: TelegramUser): Promise<void> =>
         twitterRewardClaimed: false,
         telegramComplete: false,
         telegramRewardClaimed: false,
+        youtubeComplete: false,
+        youtubeRewardClaimed: false,
+        tiktokComplete: false,
+        tiktokRewardClaimed: false,
         referralRewardClaimed: false,
         referrals: [],  
         referrer: null ,    
@@ -49,7 +53,11 @@ export const updateAllUsers = async (): Promise<void> => {
     const defaultNewFields = {
 
         diamondlastnameComplete: false,  
-        diamondlastnameRewardClaimed: false,  
+        diamondlastnameRewardClaimed: false, 
+        youtubeComplete: false,
+        youtubeRewardClaimed: false,
+        tiktokComplete: false,
+        tiktokRewardClaimed: false, 
     };
 
     querySnapshot.forEach((document) => {
@@ -94,7 +102,7 @@ export const getUserData = async (userId: string): Promise<UserData | null> => {
 
 export const completeSocialMission = async (
   userId: string, 
-  platform: 'twitter' | 'telegram' | 'diamondlastname'
+  platform: 'twitter' | 'telegram' | 'diamondlastname' | 'youtube' | 'tiktok'
 ): Promise<void> => {
   try {
     const userRef = doc(db, 'users', userId);
@@ -116,7 +124,7 @@ export const completeSocialMission = async (
 
 export const claimMissionReward = async (
   userId: string,
-  missionType: 'twitter' | 'telegram' | 'referral' | 'grandPrize' | 'diamondlastname',
+  missionType: 'twitter' | 'telegram' | 'referral' | 'grandPrize' | 'diamondlastname' | 'youtube' | 'tiktok',
   rewardAmount: number,
   additionalUpdates?: object
 ): Promise<void> => {
@@ -198,6 +206,10 @@ export const handleReferral = async (userId: string, referrerId: string): Promis
         twitterRewardClaimed: false,
         telegramComplete: false,
         telegramRewardClaimed: false,
+        youtubeComplete: false,
+        youtubeRewardClaimed: false,
+        tiktokComplete: false,
+        tiktokRewardClaimed: false,
         referralRewardClaimed: false,
         referrals: [],
         referrer: null,
@@ -377,7 +389,7 @@ export const checkStreakMilestones = async (telegramId: string): Promise<number 
     const streakData = await getUserStreak(telegramId);
     if (!streakData) return null;
     
-    // Define milestone rewards (streak day -> reward amount)
+    // Define milestone rewards (streak day => reward amount)
     const milestones: Record<number, number> = {
       7: 50,   // 7 days streak = 50 tokens
       30: 250, // 30 days streak = 250 tokens

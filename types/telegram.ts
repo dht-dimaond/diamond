@@ -21,6 +21,10 @@ export interface TelegramUser {
     twitterRewardClaimed: boolean;
     telegramComplete: boolean;
     telegramRewardClaimed: boolean;
+    youtubeComplete: boolean;
+    youtubeRewardClaimed: boolean;
+    tiktokComplete: boolean;
+    tiktokRewardClaimed: boolean;
     referralRewardClaimed: boolean;
     referrals?: string[];
     referrer?: string | null;
@@ -41,38 +45,38 @@ export interface TelegramUser {
   
 
 
-  // Define your package details interface
+
 export interface MiningPackage {
   priceTON: number;
   hashRate: string;
   Validity: string;
 }
 
-// Define the structure for transaction details
+
 export interface TransactionDetails {
   amount: number;
-  date: string;     // ISO formatted date string
+  date: string;    
   item: string;
   boc: string;
   validity: string;
 }
 
-// Define the props for the TransactionsList component
+
 export interface TransactionsListProps {
   transactions: TransactionDetails[];
 }
 
 
-// In your types/telegram.ts (or similar)
+
 export interface MiningTransaction {
-  id?: string;                    // Firestore auto-generated ID
-  userId: string;                 // Telegram user ID as string
-  packageId: number;              // Reference to the purchased package
-  hashRate: number;               // Hash rate from the package
-  priceTON: number;              // Price in TON
-  amount: number;                 // Actual amount paid
-  date: string;                   // ISO formatted date string
-  boc: string;                    // Blockchain transaction data
+  id?: string;                   
+  userId: string;                
+  packageId: number;              
+  hashRate: number;              
+  priceTON: number;            
+  amount: number;              
+  date: string;                   
+  boc: string;                  
   validity: string;   
   item: string | number;          
 }
