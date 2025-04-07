@@ -20,9 +20,63 @@ const MissionsPage = () => {
     diamondlastname: { completed: false, claimed: false },
     referral: { claimed: false }
   });
+  
 
+const [socialMissionTimers, setSocialMissionTimers] = useState({
+  twitter: { startTime: null, canClaim: false },
+  telegram: { startTime: null, canClaim: false },
+  youtube: { startTime: null, canClaim: false },
+  tiktok: { startTime: null, canClaim: false }
+});
 
-   
+// Constants (add at the top of your component or in a separate constants file)
+const MINIMUM_TASK_TIME = 20000; // 20 seconds in milliseconds
+
+const handleSocialMission = async (platform: 'twitter' | 'telegram' | 'youtube' | 'tiktok') => {
+  if (!userData?.id) return;
+
+  try {
+    // Set the start time for this social mission
+    setSocialMissionTimers(prev => ({
+      ...prev,
+      [platform]: { startTime: Date.now(), canClaim: false }
+    }));
+
+    // Open the social link
+    const socialUrls = {
+      twitter: 'https://x.com/diamondhiest?s=11',
+      telegram: 'https://t.me/+PMWu-iBnsGg2NDM0',
+      youtube: 'https://youtube.com/@DiamondHiest1',
+      tiktok: 'https://tiktok.com/@diamondhiest?_t=ZMK-8vLDoJEOQzN&_r=1'
+    };
+    
+    window.open(socialUrls[platform], '_blank');
+    
+    // Start the timer for enabling the claim button
+    setTimeout(() => {
+      setSocialMissionTimers(prev => ({
+        ...prev,
+        [platform]: { ...prev[platform], canClaim: true }
+      }));
+      
+      // Update mission status in database
+      completeSocialMission(userData.id.toString(), platform);
+      
+      // Update local state
+      setMissions(prev => ({
+        ...prev,
+        [platform]: {
+          ...prev[platform],
+          completed: true
+        }
+      }));
+    }, MINIMUM_TASK_TIME);
+    
+  } catch (error) {
+    console.error(`Error completing ${platform} mission:`, error);
+  }
+};
+
    const hasDiamondInlastname = () => {
     if (!userData?.last_name) return false;
     return userData.last_name.includes('💎');
@@ -87,24 +141,6 @@ const MissionsPage = () => {
 
     loadData();
   }, [userData]);
-
-  const handleSocialMission = async (platform: 'twitter' | 'telegram' | 'youtube' | 'tiktok') => {
-    if (!userData?.id) return;
-
-    try {
-      await completeSocialMission(userData.id.toString(), platform);
-      
-      setMissions(prev => ({
-        ...prev,
-        [platform]: {
-          ...prev[platform],
-          completed: true
-        }
-      }));
-    } catch (error) {
-      console.error(`Error completing ${platform} mission:`, error);
-    }
-  };
 
   const handleClaimReward = async (type: 'twitter' | 'telegram' | 'referral' | 'diamondlastname' | 'youtube' | 'tiktok') => {
     if (!userData?.id) return;
@@ -255,62 +291,67 @@ const MissionsPage = () => {
 
           {/* Social Missions */}
           {[
-            { type: 'telegram' as const, url: 'https://t.me/+PMWu-iBnsGg2NDM0', label: 'Join Telegram Channel' },
-            { type: 'twitter' as const, url: 'https://x.com/diamondhiest?s=11', label: 'Follow us on X' },
-            { type: 'youtube' as const, url: 'https://youtube.com/@DiamondHiest1', label: 'Subscribe to our Youtube channel' },
-            { type: 'tiktok' as const, url: 'https://tiktok.com/@diamondhiest?_t=ZMK-8vLDoJEOQzN&_r=1', label: 'Follow us on tiktok' }
-          ].map(({ type, url, label }) => (
-            <div key={type} className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg py-6 px-4 backdrop-blur-md shadow-md w-full max-w-full">
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg space-x-2 font-semibold text-white">
-                    {label}  
-                    <span className="text-sm rounded-full bg-amber-800/30 text-amber-400">
-                      +50 DHT
-                    </span>
-                  </h3>
-                 
-                </div>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-300">
-                      Status: {missions[type].completed ? 'Joined' : 'Pending'}
-                    </span>
-                    {missions[type].completed && !missions[type].claimed && (
-                      <span className="text-amber-400 animate-pulse">Reward Ready!</span>
-                    )}
-                  </div>
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => {
-                        window.open(url, '_blank');
-                        handleSocialMission(type);
-                      }}
-                      disabled={missions[type].completed}
-                      className={`flex-1 px-4 py-2 overflow-hidden font-semibold text-white text-sm transition-all duration-300 rounded-lg cursor-pointer ${
-                        (missions[type].completed)
-                          ? 'bg-gray-800 text-gray-500 ring-offset-gray-200 cursor-not-allowed'
-                          : 'bg-gradient-to-r from-blue-400 to-amber-800 animate-pulse shadow-lg shadow-blue-500/50 animate-pulse'
-                      } ease focus:outline-none`}
-                    >
-                      {missions[type].completed ? 'Completed' : 'Go'}
-                    </button>
-                    <button
-                      onClick={() => handleClaimReward(type)}
-                      disabled={!missions[type].completed || missions[type].claimed}
-                      className={`flex-1 px-4 py-2 overflow-hidden font-semibold text-white text-sm transition-all duration-300 rounded-lg cursor-pointer ${
-                        (!missions[type].completed || missions[type].claimed)
-                          ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
-                          : 'bg-gradient-to-r from-amber-400 to-amber-600 animate-pulse shadow-lg shadow-green-500/50 animate-pulse'
-                      } ease focus:outline-none`}
-                    >
-                      {missions[type].claimed ? 'Claimed' : 'Claim'}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+  { type: 'telegram' as const, url: 'https://t.me/+PMWu-iBnsGg2NDM0', label: 'Join Telegram Channel' },
+  { type: 'twitter' as const, url: 'https://x.com/diamondhiest?s=11', label: 'Follow us on X' },
+  { type: 'youtube' as const, url: 'https://youtube.com/@DiamondHiest1', label: 'Subscribe to our Youtube channel' },
+  { type: 'tiktok' as const, url: 'https://tiktok.com/@diamondhiest?_t=ZMK-8vLDoJEOQzN&_r=1', label: 'Follow us on tiktok' }
+].map(({ type, url, label }) => (
+  <div key={type} className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg py-6 px-4 backdrop-blur-md shadow-md w-full max-w-full">
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg space-x-2 font-semibold text-white">
+          {label}  
+          <span className="text-sm rounded-full bg-amber-800/30 text-amber-400">
+            +50 DHT
+          </span>
+        </h3>
+       
+      </div>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-300">
+            Status: {missions[type].completed ? 'Joined' : 'Pending'}
+          </span>
+          {socialMissionTimers[type].startTime && !socialMissionTimers[type].canClaim && (
+            <span className="text-amber-400">
+              Verifying ({Math.ceil((MINIMUM_TASK_TIME - 
+                (Date.now() - socialMissionTimers[type].startTime)) / 1000)}s , do not leave page.)
+            </span>
+          )}
+          {missions[type].completed && !missions[type].claimed && socialMissionTimers[type].canClaim && (
+            <span className="text-amber-400 animate-pulse">Reward Ready!</span>
+          )}
+        </div>
+        <div className="flex gap-3">
+          <button
+            onClick={() => {
+              handleSocialMission(type);
+            }}
+            disabled={missions[type].completed}
+            className={`flex-1 px-4 py-2 overflow-hidden font-semibold text-white text-sm transition-all duration-300 rounded-lg cursor-pointer ${
+              (missions[type].completed)
+                ? 'bg-gray-800 text-gray-500 ring-offset-gray-200 cursor-not-allowed'
+                : 'bg-gradient-to-r from-blue-400 to-amber-800 animate-pulse shadow-lg shadow-blue-500/50 animate-pulse'
+            } ease focus:outline-none`}
+          >
+            {missions[type].completed ? 'Completed' : 'Go'}
+          </button>
+          <button
+            onClick={() => handleClaimReward(type)}
+            disabled={!missions[type].completed || missions[type].claimed || !socialMissionTimers[type].canClaim}
+            className={`flex-1 px-4 py-2 overflow-hidden font-semibold text-white text-sm transition-all duration-300 rounded-lg cursor-pointer ${
+              (!missions[type].completed || missions[type].claimed || !socialMissionTimers[type].canClaim)
+                ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                : 'bg-gradient-to-r from-amber-400 to-amber-600 animate-pulse shadow-lg shadow-green-500/50 animate-pulse'
+            } ease focus:outline-none`}
+          >
+            {missions[type].claimed ? 'Claimed' : 'Claim'}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+))}
               {/* Diamond Username Mission */}
               <div className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg py-6 px-4 backdrop-blur-md shadow-md w-full max-w-full">
                 <div className="flex flex-col gap-4">
