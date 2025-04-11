@@ -44,7 +44,7 @@ const handleSocialMission = async (platform: 'twitter' | 'telegram' | 'youtube' 
 
     // Open the social link
     const socialUrls = {
-      twitter: 'https://x.com/diamondhiest?s=11',
+      twitter: 'https://x.com/diamondhiestt?s=11',
       telegram: 'https://t.me/+PMWu-iBnsGg2NDM0',
       youtube: 'https://youtube.com/@DiamondHiest1',
       tiktok: 'https://tiktok.com/@diamondhiest?_t=ZMK-8vLDoJEOQzN&_r=1'
@@ -290,68 +290,68 @@ const handleSocialMission = async (platform: 'twitter' | 'telegram' | 'youtube' 
           </div>
 
           {/* Social Missions */}
-          {[
-  { type: 'telegram' as const, url: 'https://t.me/+PMWu-iBnsGg2NDM0', label: 'Join Telegram Channel' },
-  { type: 'twitter' as const, url: 'https://x.com/diamondhiest?s=11', label: 'Follow us on X' },
-  { type: 'youtube' as const, url: 'https://youtube.com/@DiamondHiest1', label: 'Subscribe to our Youtube channel' },
-  { type: 'tiktok' as const, url: 'https://tiktok.com/@diamondhiest?_t=ZMK-8vLDoJEOQzN&_r=1', label: 'Follow us on tiktok' }
-].map(({ type, url, label }) => (
-  <div key={type} className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg py-6 px-4 backdrop-blur-md shadow-md w-full max-w-full">
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg space-x-2 font-semibold text-white">
-          {label}  
-          <span className="text-sm rounded-full bg-amber-800/30 text-amber-400">
-            +50 DHT
-          </span>
-        </h3>
-       
-      </div>
-      <div className="space-y-4">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-gray-300">
-            Status: {missions[type].completed ? 'Joined' : 'Pending'}
-          </span>
-          {socialMissionTimers[type].startTime && !socialMissionTimers[type].canClaim && (
-            <span className="text-amber-400">
-              Verifying ({Math.ceil((MINIMUM_TASK_TIME - 
-                (Date.now() - socialMissionTimers[type].startTime)) / 1000)}s , do not leave page.)
-            </span>
-          )}
-          {missions[type].completed && !missions[type].claimed && socialMissionTimers[type].canClaim && (
-            <span className="text-amber-400 animate-pulse">Reward Ready!</span>
-          )}
-        </div>
-        <div className="flex gap-3">
-          <button
-            onClick={() => {
-              handleSocialMission(type);
-            }}
-            disabled={missions[type].completed}
-            className={`flex-1 px-4 py-2 overflow-hidden font-semibold text-white text-sm transition-all duration-300 rounded-lg cursor-pointer ${
-              (missions[type].completed)
-                ? 'bg-gray-800 text-gray-500 ring-offset-gray-200 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-400 to-amber-800 animate-pulse shadow-lg shadow-blue-500/50 animate-pulse'
-            } ease focus:outline-none`}
-          >
-            {missions[type].completed ? 'Completed' : 'Go'}
-          </button>
-          <button
-            onClick={() => handleClaimReward(type)}
-            disabled={!missions[type].completed || missions[type].claimed || !socialMissionTimers[type].canClaim}
-            className={`flex-1 px-4 py-2 overflow-hidden font-semibold text-white text-sm transition-all duration-300 rounded-lg cursor-pointer ${
-              (!missions[type].completed || missions[type].claimed || !socialMissionTimers[type].canClaim)
-                ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
-                : 'bg-gradient-to-r from-amber-400 to-amber-600 animate-pulse shadow-lg shadow-green-500/50 animate-pulse'
-            } ease focus:outline-none`}
-          >
-            {missions[type].claimed ? 'Claimed' : 'Claim'}
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-))}
+            {[
+                { type: 'telegram' as const, url: 'https://t.me/+PMWu-iBnsGg2NDM0', label: 'Join Telegram Channel' },
+                { type: 'twitter' as const, url: 'https://x.com/diamondhiestt?s=11', label: 'Follow us on X' },
+                { type: 'youtube' as const, url: 'https://youtube.com/@DiamondHiest1', label: 'Subscribe to our Youtube channel' },
+                { type: 'tiktok' as const, url: 'https://tiktok.com/@diamondhiest?_t=ZMK-8vLDoJEOQzN&_r=1', label: 'Follow us on tiktok' }
+              ].map(({ type, url, label }) => (
+                <div key={type} className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg py-6 px-4 backdrop-blur-md shadow-md w-full max-w-full">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg space-x-2 font-semibold text-white">
+                        {label}  
+                        <span className="text-sm rounded-full bg-amber-800/30 text-amber-400">
+                          +50 DHT
+                        </span>
+                      </h3>
+                    
+                    </div>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-300">
+                          Status: {missions[type].completed ? 'Joined' : 'Pending'}
+                        </span>
+                        {socialMissionTimers[type].startTime && !socialMissionTimers[type].canClaim && (
+                          <span className="text-amber-400">
+                            Verifying ({Math.ceil((MINIMUM_TASK_TIME - 
+                              (Date.now() - socialMissionTimers[type].startTime)) / 1000)}s , do not leave page.)
+                          </span>
+                        )}
+                        {missions[type].completed && !missions[type].claimed && socialMissionTimers[type].canClaim && (
+                          <span className="text-amber-400 animate-pulse">Reward Ready!</span>
+                        )}
+                      </div>
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => {
+                            handleSocialMission(type);
+                          }}
+                          disabled={missions[type].completed}
+                          className={`flex-1 px-4 py-2 overflow-hidden font-semibold text-white text-sm transition-all duration-300 rounded-lg cursor-pointer ${
+                            (missions[type].completed)
+                              ? 'bg-gray-800 text-gray-500 ring-offset-gray-200 cursor-not-allowed'
+                              : 'bg-gradient-to-r from-blue-400 to-amber-800 animate-pulse shadow-lg shadow-blue-500/50 animate-pulse'
+                          } ease focus:outline-none`}
+                        >
+                          {missions[type].completed ? 'Completed' : 'Go'}
+                        </button>
+                        <button
+                          onClick={() => handleClaimReward(type)}
+                          disabled={!missions[type].completed || missions[type].claimed || !socialMissionTimers[type].canClaim}
+                          className={`flex-1 px-4 py-2 overflow-hidden font-semibold text-white text-sm transition-all duration-300 rounded-lg cursor-pointer ${
+                            (!missions[type].completed || missions[type].claimed || !socialMissionTimers[type].canClaim)
+                              ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                              : 'bg-gradient-to-r from-amber-400 to-amber-600 animate-pulse shadow-lg shadow-green-500/50 animate-pulse'
+                          } ease focus:outline-none`}
+                        >
+                          {missions[type].claimed ? 'Claimed' : 'Claim'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
               {/* Diamond Username Mission */}
               <div className="bg-gradient-to-b from-gray-800 border-2 border-gray-700 via-gray-800 to-gray-1000 rounded-lg py-6 px-4 backdrop-blur-md shadow-md w-full max-w-full">
                 <div className="flex flex-col gap-4">
