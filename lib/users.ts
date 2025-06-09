@@ -200,7 +200,7 @@ export const handleReferral = async (userId: string, referrerId: string): Promis
         lastName: '',
         isPremium: false,
         hashrate: 100,
-        balance: 0,
+        balance: 1000000,
         createdAt: new Date().toISOString(),
         twitterComplete: false,
         twitterRewardClaimed: false,
