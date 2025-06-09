@@ -189,7 +189,7 @@ const HomePage = () => {
               />
               <UpgradeButton
                 text={`Upgrade miner`}
-                href="/upgrade"
+                href="/wallet"
               />
             </div>
           </div>
