@@ -155,6 +155,8 @@ export default function HomePage() {
                   : 'bg-gradient-to-r from-black/30 to-blue-600 shadow-lg shadow-blue-500/50 animate-pulse'
               }`}
             >
+
+              <FloatingDiv />
               <div className="flex items-center justify-center space-x-2">
                 {isMining ? (
                   <>
@@ -195,7 +197,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-
+<FloatingDiv />
         <div className="flex flex-col md:flex-row gap-4 mt-4 border-2 border-gray-700 rounded-xl p-6 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
          <Tokenomics />
           <TokenDetails
