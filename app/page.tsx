@@ -238,7 +238,7 @@ const FloatingDiv = () => {
         top: position.top,
         left: position.left,
         padding: '1rem 1.5rem',
-        backgroundColor: '#fff',
+        backgroundColor: '#FF0000',
         border: '1px solid #ddd',
         borderRadius: '12px',
         boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
