@@ -106,7 +106,6 @@ export default function HomePage() {
         />
       <div className="max-w-l mx-auto">
       <div className="flex flex-col gap-4 mt-2 border-2 border-gray-700 rounded-xl p-4 shadow-xl bg-gradient-to-b from-gray-900/80 to-black/50">
-         <FloatingDiv />
         <DHTBalanceCard balance={balance} imageSrc="/coin.png" />
         <div className="flex items-center justify-between border-t border-gray-700/50 pt-2">
           <div className="flex items-center">
@@ -155,8 +154,6 @@ export default function HomePage() {
                   : 'bg-gradient-to-r from-black/30 to-blue-600 shadow-lg shadow-blue-500/50 animate-pulse'
               }`}
             >
-
-              <FloatingDiv />
               <div className="flex items-center justify-center space-x-2">
                 {isMining ? (
                   <>
@@ -214,41 +211,3 @@ export default function HomePage() {
   );
 };
 
-
-const gibberish = '哈咯哩咯咚咚哒啪叽哔咕啦咕噜';
-
-const FloatingDiv = () => {
-  const [position, setPosition] = useState({ top: 100, left: 100 });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPosition({
-        top: Math.random() * window.innerHeight * 0.8,
-        left: Math.random() * window.innerWidth * 0.8,
-      });
-    }, 3000); 
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        top: position.top,
-        left: position.left,
-        padding: '1rem 1.5rem',
-        backgroundColor: '#FF0000',
-        border: '1px solid #ddd',
-        borderRadius: '12px',
-        boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
-        fontSize: '1.2rem',
-        fontFamily: 'sans-serif',
-        transition: 'top 1s ease, left 1s ease',
-        zIndex: 9999,
-      }}
-    >
-      {gibberish}
-    </div>
-  );
-};
