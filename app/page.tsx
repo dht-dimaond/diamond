@@ -148,7 +148,6 @@ export default function HomePage() {
           <div className="space-y-4">
             <button
               onClick={toggleMining}
-              disabled
               className={`w-full py-3 px-6 rounded-md font-semibold text-white transition-all transform hover:scale-105 ${
                 isMining
                   ? 'bg-gradient-to-r from-amber-600 to-amber-800 animate-pulse shadow-lg shadow-green-500/50'
@@ -190,7 +189,7 @@ export default function HomePage() {
               />
               <UpgradeButton
                 text={`Upgrade miner`}
-                href="/wallet"
+                href="/upgrade"
               />
             </div>
           </div>
